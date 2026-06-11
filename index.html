@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#6C63FF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.json">
+<title>Belajar Yuk SD</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root{--p:#6C63FF;--p2:#A78BFA;--acc:#FF6B6B;--acc2:#FFC857;--g:#48BB78;--bg:#F0EEFF;--card:#fff;--txt:#2D2B55;--txt2:#7B78B8;--r:18px;--rs:12px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--txt);display:flex;flex-direction:column;max-width:480px;margin:0 auto}
+.screen{display:none;flex-direction:column;height:100vh;overflow-y:auto;overflow-x:hidden;position:relative;z-index:1}
+.screen.active{display:flex;animation:sIn .25s ease}
+@keyframes sIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{0%{transform:scale(.75);opacity:0}65%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes confPop{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(90px) rotate(400deg);opacity:0}}
+@keyframes starPop{0%{transform:scale(0) rotate(-30deg);opacity:0}60%{transform:scale(1.3) rotate(10deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+
+/* HOME */
+#s-home{background:linear-gradient(155deg,#6C63FF,#A78BFA)}
+.home-top{padding:44px 20px 20px;text-align:center}
+.mascot{font-size:66px;animation:float 3s ease infinite;display:block;margin-bottom:8px}
+.home-title{font-family:'Fredoka One',cursive;font-size:34px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.15)}
+.home-sub{font-size:13px;color:rgba(255,255,255,.85);margin-top:3px;font-weight:700}
+.home-card{background:var(--card);border-radius:28px 28px 0 0;flex:1;padding:20px;margin-top:14px;overflow-y:auto}
+.sec-lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--txt2);margin-bottom:10px}
+.diff-row{display:flex;gap:8px;margin-bottom:18px}
+.diff-btn{flex:1;padding:9px 0;border-radius:var(--rs);border:2px solid transparent;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;background:#F5F3FF;color:var(--txt2);transition:all .15s}
+.diff-btn.am{background:#D1FAE5;color:#065F46;border-color:#34D399}
+.diff-btn.as{background:#FEF3C7;color:#92400E;border-color:#FBBF24}
+.diff-btn.ah{background:#FEE2E2;color:#991B1B;border-color:#F87171}
+.subj-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-bottom:80px}
+.subj-card{background:var(--card);border-radius:var(--r);padding:14px 10px;text-align:center;cursor:pointer;border:2px solid #EEF0FF;transition:transform .15s;box-shadow:0 4px 16px rgba(108,99,255,.12)}
+.subj-card:active{transform:scale(.95)}
+.subj-card .si{font-size:32px;margin-bottom:5px}
+.subj-card .sl{font-size:12px;font-weight:800;color:var(--txt)}
+.subj-card .sn{font-size:10px;color:var(--txt2);margin-top:2px;font-weight:600}
+.subj-card .sd{font-size:10px;padding:2px 8px;border-radius:99px;margin-top:5px;display:inline-block;font-weight:700}
+.stars-row{display:flex;gap:3px;justify-content:center;margin-top:5px}
+.star-mini{font-size:11px}
+.lb-fab{position:fixed;bottom:18px;right:18px;z-index:100;background:var(--acc);color:#fff;border:none;border-radius:50px;padding:11px 18px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 4px 18px rgba(255,107,107,.4)}
+
+/* LEVEL SELECT */
+#s-level{background:var(--bg)}
+.lv-header{background:linear-gradient(135deg,var(--p),var(--p2));padding:44px 16px 18px;display:flex;align-items:center;gap:10px}
+.lv-header h2{font-family:'Fredoka One',cursive;font-size:20px;color:#fff;flex:1}
+.back-btn{background:rgba(255,255,255,.25);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;color:#fff;flex-shrink:0}
+.lv-info{padding:14px 16px 8px;font-size:12px;color:var(--txt2);font-weight:700}
+.lv-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:0 16px 80px}
+.lv-card{background:var(--card);border-radius:var(--rs);padding:12px 6px;text-align:center;cursor:pointer;border:2px solid #EEF0FF;transition:transform .15s;box-shadow:0 3px 12px rgba(108,99,255,.10)}
+.lv-card:active{transform:scale(.93)}
+.lv-card.locked{opacity:.45;cursor:not-allowed;background:#F5F3FF}
+.lv-card.done{border-color:#34D399;background:#F0FFF4}
+.lv-card.current{border-color:var(--p);background:#EEF0FF;animation:pulse 1.5s ease infinite}
+.lv-num{font-size:18px;font-weight:900;color:var(--p)}
+.lv-stars{font-size:12px;margin-top:3px}
+.lv-badge{font-size:9px;color:var(--txt2);font-weight:700;margin-top:2px}
+
+/* QUIZ */
+#s-quiz{background:var(--bg)}
+.quiz-hdr{background:linear-gradient(135deg,var(--p),var(--p2));padding:44px 14px 14px;display:flex;align-items:center;gap:8px}
+.quiz-hdr-info{flex:1}
+.quiz-hdr-title{font-size:14px;font-weight:800;color:#fff}
+.quiz-hdr-sub{font-size:10px;color:rgba(255,255,255,.8);font-weight:600}
+.score-pill{background:rgba(255,255,255,.25);border-radius:99px;padding:5px 11px;font-size:12px;font-weight:800;color:#fff;white-space:nowrap}
+.timer-row{display:flex;align-items:center;gap:10px;padding:10px 14px 4px}
+.timer-wrap{position:relative;width:52px;height:52px;flex-shrink:0}
+.timer-wrap svg{transform:rotate(-90deg)}
+.t-bg{fill:none;stroke:#E0DBFF;stroke-width:4}
+.t-fill{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .3s}
+.t-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:15px;font-weight:900;color:var(--p)}
+.t-num.red{color:#E24B4A;animation:pulse .5s ease infinite}
+.lives-row{display:flex;gap:3px}
+.life{font-size:18px;transition:all .3s}
+.life.lost{filter:grayscale(1);opacity:.3;transform:scale(.8)}
+.total-time-wrap{text-align:right;margin-left:auto}
+.total-time-lbl{font-size:10px;color:var(--txt2);font-weight:700}
+.total-time-val{font-size:15px;font-weight:900;color:var(--p)}
+.level-pill{background:rgba(255,255,255,.22);border-radius:99px;padding:4px 10px;font-size:11px;font-weight:800;color:#fff}
+.prog-wrap{padding:4px 14px 0}
+.prog-lbl{font-size:10px;font-weight:700;color:var(--txt2)}
+.prog-bar{height:5px;background:#E0DBFF;border-radius:99px;overflow:hidden;margin-top:3px}
+.prog-fill{height:100%;border-radius:99px;transition:width .4s}
+.q-card{margin:10px 14px 8px;background:var(--card);border-radius:var(--r);padding:16px;box-shadow:0 6px 24px rgba(108,99,255,.12);border:2px solid #EEF0FF}
+.q-badge{display:inline-block;font-size:10px;font-weight:800;padding:2px 9px;border-radius:99px;background:#EEF0FF;color:var(--p);margin-bottom:7px}
+.q-text{font-size:15px;font-weight:800;color:var(--txt);line-height:1.5}
+.opts{padding:0 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt-btn{background:var(--card);border:2px solid #EEF0FF;border-radius:var(--rs);padding:11px 9px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:var(--txt);text-align:left;transition:all .15s;line-height:1.4}
+.opt-btn:active:not(:disabled){transform:scale(.95)}
+.opt-btn.correct{background:#D1FAE5;border-color:#34D399;color:#065F46;animation:pop .3s ease}
+.opt-btn.wrong{background:#FEE2E2;border-color:#F87171;color:#991B1B;animation:shake .35s ease}
+.opt-btn.used{background:#F5F3FF;border-color:#E0DBFF;color:#B0AED0;cursor:not-allowed}
+.opt-btn:disabled{cursor:default}
+.fb-box{margin:8px 14px;padding:10px 13px;border-radius:var(--rs);font-size:12px;font-weight:700;display:none;animation:pop .22s ease;line-height:1.5}
+.fb-box.ok{background:#D1FAE5;color:#065F46;border:2px solid #34D399}
+.fb-box.no{background:#FEE2E2;color:#991B1B;border:2px solid #F87171}
+.fb-box.to{background:#FEF3C7;color:#92400E;border:2px solid #FBBF24}
+.nxt-btn{display:none;margin:7px 14px 14px;width:calc(100% - 28px);background:linear-gradient(135deg,var(--p),var(--p2));border:none;border-radius:var(--rs);padding:13px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(108,99,255,.3);transition:transform .15s}
+.nxt-btn:active{transform:scale(.97)}
+
+/* LEVEL COMPLETE */
+#s-lvdone{background:linear-gradient(155deg,#48BB78,#68D391)}
+.lvd-top{padding:54px 20px 20px;text-align:center}
+.lvd-emoji{font-size:72px;animation:pop .5s ease;display:block;margin-bottom:8px}
+.lvd-title{font-family:'Fredoka One',cursive;font-size:30px;color:#fff}
+.lvd-sub{font-size:13px;color:rgba(255,255,255,.9);font-weight:700;margin-top:5px}
+.lvd-stars-big{display:flex;justify-content:center;gap:8px;margin:16px 0 4px;font-size:44px}
+.star-anim{animation:starPop .4s ease forwards;opacity:0}
+.star-anim:nth-child(1){animation-delay:.1s}
+.star-anim:nth-child(2){animation-delay:.25s}
+.star-anim:nth-child(3){animation-delay:.4s}
+.lvd-body{background:var(--card);border-radius:28px 28px 0 0;flex:1;padding:22px 18px;margin-top:14px}
+.lvd-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:18px}
+.lvd-stat{background:var(--bg);border-radius:var(--rs);padding:12px 8px;text-align:center}
+.lvd-stat-val{font-size:20px;font-weight:900;color:var(--txt)}
+.lvd-stat-lbl{font-size:10px;color:var(--txt2);font-weight:700;margin-top:2px}
+.lvd-btns{display:flex;flex-direction:column;gap:9px}
+.lvd-btn{width:100%;padding:13px;border-radius:var(--rs);border:2px solid #EEF0FF;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;background:var(--bg);color:var(--txt);transition:transform .15s}
+.lvd-btn:active{transform:scale(.97)}
+.lvd-btn.primary{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;border:none;box-shadow:0 4px 14px rgba(108,99,255,.3)}
+.lvd-btn.green{background:linear-gradient(135deg,#48BB78,#68D391);color:#fff;border:none;box-shadow:0 4px 14px rgba(72,187,120,.3)}
+
+/* GAME OVER */
+#s-go{background:linear-gradient(155deg,#E24B4A,#FC8181)}
+.go-top{padding:56px 20px 20px;text-align:center}
+.go-emoji{font-size:72px;animation:pop .5s ease;display:block;margin-bottom:10px}
+.go-title{font-family:'Fredoka One',cursive;font-size:30px;color:#fff}
+.go-sub{font-size:13px;color:rgba(255,255,255,.9);font-weight:700;margin-top:5px}
+.go-body{background:var(--card);border-radius:28px 28px 0 0;flex:1;padding:22px 18px;margin-top:14px}
+.go-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+.go-stat{background:var(--bg);border-radius:var(--rs);padding:12px;text-align:center}
+.go-stat-val{font-size:22px;font-weight:900;color:var(--txt)}
+.go-stat-lbl{font-size:10px;color:var(--txt2);font-weight:700;margin-top:2px}
+.go-btns{display:flex;flex-direction:column;gap:9px}
+.go-btn{width:100%;padding:13px;border-radius:var(--rs);border:2px solid #EEF0FF;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;background:var(--bg);color:var(--txt);transition:transform .15s}
+.go-btn:active{transform:scale(.97)}
+.go-btn.primary{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;border:none;box-shadow:0 4px 14px rgba(108,99,255,.3)}
+.go-btn.red{background:linear-gradient(135deg,#E24B4A,#FC8181);color:#fff;border:none}
+
+/* LB */
+#s-lb{background:var(--bg)}
+.lb-hdr{background:linear-gradient(135deg,var(--acc),#FF8E53);padding:44px 16px 18px;display:flex;align-items:center;gap:10px}
+.lb-hdr h2{font-family:'Fredoka One',cursive;font-size:20px;color:#fff;flex:1}
+.tab-scroll{display:flex;gap:7px;padding:12px 14px 6px;overflow-x:auto}
+.tab-scroll::-webkit-scrollbar{display:none}
+.tab-pill{white-space:nowrap;padding:6px 13px;border-radius:99px;font-size:11px;font-weight:800;background:var(--card);color:var(--txt2);border:2px solid #EEF0FF;cursor:pointer;transition:all .15s}
+.tab-pill.active{background:var(--p);color:#fff;border-color:var(--p)}
+.sort-row{display:flex;gap:7px;padding:3px 14px 8px}
+.sort-btn{flex:1;padding:7px 0;border-radius:var(--rs);border:2px solid #EEF0FF;background:var(--card);font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:var(--txt2);cursor:pointer;transition:all .15s}
+.sort-btn.active{background:var(--p);color:#fff;border-color:var(--p)}
+.lb-list{padding:4px 14px 80px}
+.lb-empty{text-align:center;padding:44px 14px;color:var(--txt2);font-size:13px;font-weight:700}
+.lb-item{display:flex;align-items:center;gap:9px;background:var(--card);border-radius:var(--rs);padding:11px;margin-bottom:7px;border:2px solid #EEF0FF;box-shadow:0 3px 10px rgba(108,99,255,.08);animation:pop .2s ease}
+.lb-rank{font-size:19px;width:28px;text-align:center;flex-shrink:0}
+.lb-info{flex:1;min-width:0}
+.lb-name{font-size:12px;font-weight:800;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-meta{font-size:10px;color:var(--txt2);font-weight:600;margin-top:2px}
+.lb-right{text-align:right}
+.lb-val{font-size:15px;font-weight:900;color:var(--p)}
+.lb-sub{font-size:10px;color:var(--txt2);font-weight:600}
+.dtag{display:inline-block;font-size:9px;font-weight:800;padding:2px 6px;border-radius:99px;margin-left:3px}
+.conf-wrap{position:fixed;top:0;left:0;width:100%;pointer-events:none;z-index:999}
+.conf-p{position:absolute;top:-20px;font-size:18px;animation:confPop 1.2s ease forwards}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="s-home" class="screen active">
+  <div class="home-top">
+    <span class="mascot">🦉</span>
+    <div class="home-title">Belajar Yuk SD</div>
+    <div class="home-sub">Kuis Seru — Naik Level, Raih Bintang!</div>
+  </div>
+  <div class="home-card">
+    <div class="sec-lbl">Tingkat Kesulitan</div>
+    <div class="diff-row">
+      <button class="diff-btn am" id="db-mudah" onclick="setDiff('mudah')">🟢 Mudah</button>
+      <button class="diff-btn" id="db-sedang" onclick="setDiff('sedang')">🟡 Sedang</button>
+      <button class="diff-btn" id="db-susah" onclick="setDiff('susah')">🔴 Susah</button>
+    </div>
+    <div class="sec-lbl">Pilih Mata Pelajaran</div>
+    <div class="subj-grid" id="subj-grid"></div>
+  </div>
+  <button class="lb-fab" onclick="showLB()">🏆 Papan Skor</button>
+</div>
+
+<!-- LEVEL SELECT -->
+<div id="s-level" class="screen">
+  <div class="lv-header">
+    <button class="back-btn" onclick="goHome()">←</button>
+    <h2 id="lv-title"></h2>
+  </div>
+  <div class="lv-info" id="lv-info"></div>
+  <div class="lv-grid" id="lv-grid"></div>
+</div>
+
+<!-- QUIZ -->
+<div id="s-quiz" class="screen">
+  <div class="quiz-hdr">
+    <button class="back-btn" onclick="confirmBack()">←</button>
+    <div class="quiz-hdr-info">
+      <div class="quiz-hdr-title" id="q-title"></div>
+      <div class="quiz-hdr-sub" id="q-sub"></div>
+    </div>
+    <div class="level-pill" id="q-lvl-pill">Level 1</div>
+  </div>
+  <div class="timer-row">
+    <div class="timer-wrap">
+      <svg width="52" height="52" viewBox="0 0 52 52">
+        <circle class="t-bg" cx="26" cy="26" r="22"/>
+        <circle class="t-fill" id="t-arc" cx="26" cy="26" r="22" stroke-dasharray="138" stroke-dashoffset="0" stroke="#6C63FF"/>
+      </svg>
+      <div class="t-num" id="t-num">30</div>
+    </div>
+    <div class="lives-row" id="lives-row"></div>
+    <div class="total-time-wrap">
+      <div class="total-time-lbl">Total Waktu</div>
+      <div class="total-time-val" id="total-t">0.0s</div>
+    </div>
+    <div class="score-pill" id="q-score">⭐ 0</div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-lbl" id="q-prog-lbl"></div>
+    <div class="prog-bar"><div class="prog-fill" id="q-prog-fill"></div></div>
+  </div>
+  <div id="q-area"></div>
+  <div class="fb-box" id="q-fb"></div>
+  <button class="nxt-btn" id="q-nxt"></button>
+</div>
+
+<!-- LEVEL COMPLETE -->
+<div id="s-lvdone" class="screen">
+  <div class="lvd-top">
+    <span class="lvd-emoji" id="ld-emoji">🎉</span>
+    <div class="lvd-title" id="ld-title">Level Selesai!</div>
+    <div class="lvd-sub" id="ld-sub"></div>
+    <div class="lvd-stars-big" id="ld-stars"></div>
+  </div>
+  <div class="lvd-body">
+    <div class="lvd-stats">
+      <div class="lvd-stat"><div class="lvd-stat-val" id="ld-benar">0</div><div class="lvd-stat-lbl">Benar</div></div>
+      <div class="lvd-stat"><div class="lvd-stat-val" id="ld-waktu">0s</div><div class="lvd-stat-lbl">Waktu</div></div>
+      <div class="lvd-stat"><div class="lvd-stat-val" id="ld-level">1</div><div class="lvd-stat-lbl">Level</div></div>
+    </div>
+    <div class="lvd-btns">
+      <button class="lvd-btn green" id="ld-next-btn" onclick="goNextLevel()">▶ Lanjut Level Berikutnya</button>
+      <button class="lvd-btn primary" onclick="saveAndShowLB()">🏆 Simpan ke Papan Skor</button>
+      <button class="lvd-btn" onclick="showLevelSelect()">📋 Pilih Level</button>
+      <button class="lvd-btn" onclick="goHome()">🏠 Menu Utama</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAME OVER -->
+<div id="s-go" class="screen">
+  <div class="go-top">
+    <span class="go-emoji">💀</span>
+    <div class="go-title">Game Over!</div>
+    <div class="go-sub" id="go-sub">Nyawa habis! Coba lagi!</div>
+  </div>
+  <div class="go-body">
+    <div class="go-stats">
+      <div class="go-stat"><div class="go-stat-val" id="go-benar">0</div><div class="go-stat-lbl">Benar</div></div>
+      <div class="go-stat"><div class="go-stat-val" id="go-soal">0</div><div class="go-stat-lbl">Soal Ke-</div></div>
+      <div class="go-stat"><div class="go-stat-val" id="go-waktu">0s</div><div class="go-stat-lbl">Waktu</div></div>
+      <div class="go-stat"><div class="go-stat-val" id="go-level">1</div><div class="go-stat-lbl">Level</div></div>
+    </div>
+    <div class="go-btns">
+      <button class="go-btn red" onclick="retryLevel()">🔁 Coba Level Ini Lagi</button>
+      <button class="go-btn primary" onclick="showLevelSelect()">📋 Pilih Level</button>
+      <button class="go-btn" onclick="goHome()">🏠 Menu Utama</button>
+    </div>
+  </div>
+</div>
+
+<!-- LB -->
+<div id="s-lb" class="screen">
+  <div class="lb-hdr">
+    <button class="back-btn" style="background:rgba(255,255,255,.25)" onclick="goHome()">←</button>
+    <h2>🏆 Papan Skor</h2>
+    <button onclick="clearLB()" style="background:rgba(255,255,255,.25);border:none;border-radius:8px;padding:5px 11px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#fff;cursor:pointer">Hapus</button>
+  </div>
+  <div class="tab-scroll" id="lb-tabs"></div>
+  <div class="sort-row">
+    <button class="sort-btn active" id="sb-spd" onclick="setSort('speed',this)">⚡ Tercepat</button>
+    <button class="sort-btn" id="sb-scr" onclick="setSort('score',this)">⭐ Nilai</button>
+    <button class="sort-btn" id="sb-lvl" onclick="setSort('level',this)">🏅 Level</button>
+  </div>
+  <div class="lb-list" id="lb-list"></div>
+</div>
+
+<div class="conf-wrap" id="conf"></div>
+<div id="lb-name-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:20px;padding:24px;width:100%;max-width:340px;text-align:center">
+    <div style="font-size:36px;margin-bottom:8px">⭐</div>
+    <div style="font-size:16px;font-weight:800;color:#2D2B55;margin-bottom:4px">Simpan Skor!</div>
+    <div style="font-size:12px;color:#7B78B8;margin-bottom:14px">Masukkan namamu untuk papan skor</div>
+    <input type="text" id="lb-name-inp" placeholder="Nama kamu..." maxlength="20" style="width:100%;padding:11px 14px;border-radius:12px;border:2px solid #EEF0FF;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:#2D2B55;background:#F0EEFF;outline:none;margin-bottom:12px">
+    <div style="display:flex;gap:8px">
+      <button onclick="closeLBModal()" style="flex:1;padding:11px;border-radius:12px;border:2px solid #EEF0FF;background:#F0EEFF;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;color:#7B78B8">Batal</button>
+      <button onclick="doSaveLB()" style="flex:2;padding:11px;border-radius:12px;border:none;background:linear-gradient(135deg,#6C63FF,#A78BFA);font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;color:#fff">Simpan ⭐</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── CONFIG ──────────────────────────────────────────────
+const MAX_LEVELS=10;
+const QUESTIONS_PER_LEVEL=10;
+// Timer per level group
+function getLevelTimer(lvl){
+  if(lvl<=3)return 30;
+  if(lvl<=6)return 20;
+  return 10;
+}
+// Lives per level group
+function getLevelLives(lvl){
+  if(lvl<=3)return 3;
+  if(lvl<=6)return 2;
+  return 1;
+}
+
+const DIFF={
+  mudah:{label:'Mudah',tag_bg:'#D1FAE5',tag_col:'#065F46'},
+  sedang:{label:'Sedang',tag_bg:'#FEF3C7',tag_col:'#92400E'},
+  susah:{label:'Susah',tag_bg:'#FEE2E2',tag_col:'#991B1B'}
+};
+const COLORS=['#6C63FF','#FF6B6B','#48BB78','#F6AD55','#4299E1','#ED64A6','#ECC94B','#9F7AEA'];
+
+// ─── QUESTION BANK ────────────────────────────────────────
+// Each subject has diff → array of questions (we'll shuffle per level)
+const bank={
+  math:{label:'Matematika',icon:'🔢',
+    mudah:[
+      {q:'6 × 4 = ?',opts:['20','22','24','26'],ans:2,exp:'6×4=24'},
+      {q:'15 + 27 = ?',opts:['40','42','43','44'],ans:1,exp:'15+27=42'},
+      {q:'50 − 18 = ?',opts:['30','32','34','36'],ans:1,exp:'50−18=32'},
+      {q:'9 × 3 = ?',opts:['24','27','30','33'],ans:1,exp:'9×3=27'},
+      {q:'48 ÷ 6 = ?',opts:['6','7','8','9'],ans:2,exp:'48÷6=8'},
+      {q:'7 + 8 + 5 = ?',opts:['18','19','20','21'],ans:2,exp:'7+8+5=20'},
+      {q:'12 × 5 = ?',opts:['55','60','65','70'],ans:1,exp:'12×5=60'},
+      {q:'81 ÷ 9 = ?',opts:['7','8','9','10'],ans:2,exp:'81÷9=9'},
+      {q:'45 + 38 = ?',opts:['81','83','85','87'],ans:1,exp:'45+38=83'},
+      {q:'100 − 64 = ?',opts:['34','36','38','40'],ans:1,exp:'100−64=36'},
+      {q:'7 × 6 = ?',opts:['40','42','44','46'],ans:1,exp:'7×6=42'},
+      {q:'36 ÷ 4 = ?',opts:['7','8','9','10'],ans:2,exp:'36÷4=9'},
+      {q:'23 + 49 = ?',opts:['70','72','73','74'],ans:1,exp:'23+49=72'},
+      {q:'80 − 37 = ?',opts:['41','43','45','47'],ans:1,exp:'80−37=43'},
+      {q:'8 × 8 = ?',opts:['60','62','64','66'],ans:2,exp:'8×8=64'},
+      {q:'56 ÷ 7 = ?',opts:['6','7','8','9'],ans:2,exp:'56÷7=8'},
+      {q:'34 + 56 = ?',opts:['88','89','90','91'],ans:2,exp:'34+56=90'},
+      {q:'75 − 28 = ?',opts:['45','47','49','51'],ans:1,exp:'75−28=47'},
+      {q:'4 × 9 = ?',opts:['32','34','36','38'],ans:2,exp:'4×9=36'},
+      {q:'63 ÷ 7 = ?',opts:['7','8','9','10'],ans:2,exp:'63÷7=9'},
+    ],
+    sedang:[
+      {q:'8 × 7 = ?',opts:['54','56','58','60'],ans:1,exp:'8×7=56'},
+      {q:'144 ÷ 12 = ?',opts:['10','11','12','13'],ans:2,exp:'144÷12=12'},
+      {q:'Keliling persegi sisi 9 cm?',opts:['18cm','27cm','36cm','45cm'],ans:2,exp:'4×9=36cm'},
+      {q:'25% dari 200 = ?',opts:['25','40','50','75'],ans:2,exp:'¼×200=50'},
+      {q:'3² + 4² = ?',opts:['14','25','49','7'],ans:1,exp:'9+16=25'},
+      {q:'2/5 dari 100 = ?',opts:['20','30','40','50'],ans:2,exp:'2/5×100=40'},
+      {q:'Luas persegi panjang 8×5?',opts:['26','35','40','45'],ans:2,exp:'8×5=40cm²'},
+      {q:'15² = ?',opts:['200','215','225','235'],ans:2,exp:'15×15=225'},
+      {q:'7×8+4 = ?',opts:['56','58','60','64'],ans:2,exp:'56+4=60'},
+      {q:'1/2 + 1/4 = ?',opts:['1/6','2/6','3/4','1/3'],ans:2,exp:'2/4+1/4=3/4'},
+      {q:'50% dari 180 = ?',opts:['80','90','100','110'],ans:1,exp:'½×180=90'},
+      {q:'Luas persegi sisi 7 cm?',opts:['28','42','49','56'],ans:2,exp:'7²=49cm²'},
+      {q:'12 × 12 = ?',opts:['124','132','144','154'],ans:2,exp:'12×12=144'},
+      {q:'75% dari 120 = ?',opts:['80','85','90','95'],ans:2,exp:'¾×120=90'},
+      {q:'(5+3) × 6 = ?',opts:['38','42','48','56'],ans:2,exp:'8×6=48'},
+      {q:'Keliling persegi panjang 10×6?',opts:['30','32','36','60'],ans:1,exp:'2×(10+6)=32cm'},
+      {q:'2³ = ?',opts:['6','8','10','12'],ans:1,exp:'2×2×2=8'},
+      {q:'3/4 dari 80 = ?',opts:['50','55','60','65'],ans:2,exp:'¾×80=60'},
+      {q:'90 ÷ 15 = ?',opts:['4','5','6','7'],ans:2,exp:'90÷15=6'},
+      {q:'11 × 13 = ?',opts:['133','143','153','163'],ans:1,exp:'11×13=143'},
+    ],
+    susah:[
+      {q:'(18+12) ÷ 5 = ?',opts:['4','5','6','7'],ans:2,exp:'30÷5=6'},
+      {q:'Luas lingkaran r=7 (π=22/7)?',opts:['44','88','154','176'],ans:2,exp:'22/7×49=154'},
+      {q:'FPB dari 36 dan 48?',opts:['6','8','12','16'],ans:2,exp:'FPB=12'},
+      {q:'3x+5=20, x = ?',opts:['3','4','5','6'],ans:2,exp:'3x=15,x=5'},
+      {q:'KPK dari 4,6,8?',opts:['12','16','24','48'],ans:2,exp:'KPK=24'},
+      {q:'Luas trapesium a=8,b=12,t=5?',opts:['40','50','60','100'],ans:1,exp:'½×20×5=50'},
+      {q:'2³ × 3² = ?',opts:['48','54','72','81'],ans:2,exp:'8×9=72'},
+      {q:'0.375 = ?',opts:['1/4','3/8','3/4','5/8'],ans:1,exp:'3/8=0.375'},
+      {q:'√196 = ?',opts:['12','13','14','15'],ans:2,exp:'14²=196'},
+      {q:'Sudut segitiga sama sisi?',opts:['45°','60°','90°','120°'],ans:1,exp:'180÷3=60°'},
+      {q:'5x − 8 = 17, x = ?',opts:['4','5','6','7'],ans:1,exp:'5x=25,x=5... wait 5×5=25,25−8=17✓ x=5',},
+      {q:'Luas belah ketupat d1=10,d2=8?',opts:['36','40','80','18'],ans:1,exp:'½×10×8=40'},
+      {q:'(-3)×(-4) = ?',opts:['-12','-7','7','12'],ans:3,exp:'negatif×negatif=positif,12'},
+      {q:'Akar dari 225 = ?',opts:['13','14','15','16'],ans:2,exp:'15²=225'},
+      {q:'KPK dari 6 dan 9?',opts:['3','9','18','54'],ans:2,exp:'KPK(6,9)=18'},
+      {q:'(2+3)² = ?',opts:['10','13','25','30'],ans:2,exp:'5²=25'},
+      {q:'FPB dari 24 dan 36?',opts:['4','6','8','12'],ans:3,exp:'FPB(24,36)=12'},
+      {q:'2/3 + 1/6 = ?',opts:['3/9','4/6','5/6','1'],ans:2,exp:'4/6+1/6=5/6'},
+      {q:'Luas segitiga a=12,t=8?',opts:['48','96','20','40'],ans:0,exp:'½×12×8=48'},
+      {q:'4² + 5² − 3² = ?',opts:['32','34','40','42'],ans:0,exp:'16+25−9=32'},
+    ]
+  },
+  ipa:{label:'IPA',icon:'🔬',
+    mudah:[
+      {q:'Organ yang memompa darah?',opts:['Paru-paru','Hati','Jantung','Ginjal'],ans:2,exp:'Jantung memompa darah'},
+      {q:'Hewan pemakan tumbuhan?',opts:['Karnivora','Omnivora','Herbivora','Insektivora'],ans:2,exp:'Herbivora=pemakan tumbuhan'},
+      {q:'Air berubah jadi uap?',opts:['Mencair','Membeku','Mengembun','Menguap'],ans:3,exp:'Cair→gas=menguap'},
+      {q:'Planet ketiga dari matahari?',opts:['Mars','Venus','Bumi','Merkurius'],ans:2,exp:'Merkurius,Venus,Bumi...'},
+      {q:'Sumber energi terbesar bumi?',opts:['Angin','Air','Matahari','Batubara'],ans:2,exp:'Matahari=energi utama'},
+      {q:'Hewan bertelur disebut?',opts:['Vivipar','Ovipar','Ovovivipar','Mamalia'],ans:1,exp:'Ovipar=bertelur'},
+      {q:'Bagian tumbuhan menyerap air?',opts:['Daun','Batang','Akar','Bunga'],ans:2,exp:'Akar menyerap air'},
+      {q:'Benda yang ditarik magnet?',opts:['Plastik','Kayu','Besi','Karet'],ans:2,exp:'Magnet menarik besi'},
+      {q:'Air meresap ke tanah disebut?',opts:['Evaporasi','Kondensasi','Infiltrasi','Presipitasi'],ans:2,exp:'Infiltrasi=air meresap ke tanah'},
+      {q:'Hewan bernapas dengan insang?',opts:['Katak','Ikan','Lumba-lumba','Penyu'],ans:1,exp:'Ikan bernapas dengan insang'},
+      {q:'Proses air jadi es disebut?',opts:['Menguap','Membeku','Mencair','Mengembun'],ans:1,exp:'Cair→padat=membeku'},
+      {q:'Matahari termasuk benda?',opts:['Planet','Satelit','Bintang','Meteor'],ans:2,exp:'Matahari adalah bintang'},
+      {q:'Hewan yang hidup di dua alam?',opts:['Reptil','Amfibi','Mamalia','Aves'],ans:1,exp:'Amfibi=dua alam (air&darat)'},
+      {q:'Bagian bunga tempat serbuk?',opts:['Putik','Mahkota','Benang sari','Kelopak'],ans:2,exp:'Benang sari menghasilkan serbuk sari'},
+      {q:'Gas yang dihirup manusia?',opts:['CO₂','N₂','O₂','H₂'],ans:2,exp:'Manusia menghirup oksigen (O₂)'},
+      {q:'Hewan yang bermetamorfosis?',opts:['Sapi','Kucing','Kupu-kupu','Anjing'],ans:2,exp:'Kupu-kupu mengalami metamorfosis'},
+      {q:'Tulang manusia dilindungi oleh?',opts:['Otot','Kulit','Sendi','Semua benar'],ans:3,exp:'Tulang dilindungi otot dan kulit'},
+      {q:'Energi dari makanan termasuk?',opts:['Energi panas','Energi kimia','Energi gerak','Energi listrik'],ans:1,exp:'Makanan menyimpan energi kimia'},
+      {q:'Alat indera untuk mendengar?',opts:['Mata','Hidung','Telinga','Lidah'],ans:2,exp:'Telinga=alat indera pendengar'},
+      {q:'Pelangi terbentuk karena?',opts:['Angin','Pembiasan cahaya','Hujan deras','Petir'],ans:1,exp:'Pelangi=pembiasan cahaya matahari oleh air hujan'},
+    ],
+    sedang:[
+      {q:'Proses tumbuhan membuat makanan?',opts:['Respirasi','Fotosintesis','Transpirasi','Evaporasi'],ans:1,exp:'Fotosintesis=membuat makanan'},
+      {q:'Metamorfosis sempurna?',opts:['Belalang','Kupu-kupu','Kecoa','Jangkrik'],ans:1,exp:'Kupu-kupu: telur→ulat→kepompong→kupu'},
+      {q:'Planet terbesar tata surya?',opts:['Saturnus','Bumi','Mars','Jupiter'],ans:3,exp:'Jupiter=terbesar'},
+      {q:'Air mendidih pada suhu?',opts:['80°C','90°C','100°C','110°C'],ans:2,exp:'100°C di tekanan normal'},
+      {q:'Tempat fotosintesis di tumbuhan?',opts:['Akar','Batang','Daun','Bunga'],ans:2,exp:'Daun mengandung klorofil'},
+      {q:'Zat yang dihasilkan fotosintesis?',opts:['CO₂','N₂','O₂','H₂'],ans:2,exp:'Tumbuhan menghasilkan O₂'},
+      {q:'Sistem peredaran darah manusia?',opts:['Terbuka','Tertutup','Campuran','Bebas'],ans:1,exp:'Darah beredar dalam pembuluh (tertutup)'},
+      {q:'Lapisan bumi paling luar?',opts:['Mantel','Inti','Kerak','Astenosfer'],ans:2,exp:'Kerak bumi=lapisan paling luar'},
+      {q:'Gaya saat buah jatuh?',opts:['Magnet','Gravitasi','Gesek','Pegas'],ans:1,exp:'Gaya gravitasi menarik ke bawah'},
+      {q:'Organ penyaring darah?',opts:['Jantung','Hati','Ginjal','Paru-paru'],ans:2,exp:'Ginjal menyaring darah'},
+      {q:'Zat klorofil menyerap warna?',opts:['Hijau','Merah & biru','Kuning','Putih'],ans:1,exp:'Klorofil menyerap merah dan biru'},
+      {q:'Lapisan atmosfer tempat pesawat?',opts:['Troposfer','Stratosfer','Mesosfer','Termosfer'],ans:1,exp:'Stratosfer (10-50km)'},
+      {q:'Penguapan air di alam?',opts:['Kondensasi','Presipitasi','Evaporasi','Infiltrasi'],ans:2,exp:'Evaporasi=penguapan'},
+      {q:'Tulang melindungi otak?',opts:['Tulang dada','Tulang belakang','Tengkorak','Tulang rusuk'],ans:2,exp:'Tengkorak melindungi otak'},
+      {q:'Hewan berkembang biak dengan tunas?',opts:['Hydra','Amuba','Planaria','Cacing'],ans:0,exp:'Hydra berkembang biak dengan tunas'},
+      {q:'Otot yang bekerja tanpa sadar?',opts:['Otot rangka','Otot lurik','Otot polos','Otot tendon'],ans:2,exp:'Otot polos=di luar kesadaran'},
+      {q:'Fungsi hemoglobin dalam darah?',opts:['Membeku luka','Membawa O₂','Melawan kuman','Mengatur suhu'],ans:1,exp:'Hemoglobin membawa oksigen'},
+      {q:'Rantai makanan yang benar?',opts:['Elang→ular→tikus→padi','Padi→tikus→ular→elang','Tikus→padi→ular→elang','Ular→tikus→padi→elang'],ans:1,exp:'Padi→tikus→ular→elang'},
+      {q:'Perubahan gas langsung jadi padat?',opts:['Membeku','Menyublim','Mengkristal','Deposisi'],ans:3,exp:'Deposisi=gas→padat langsung'},
+      {q:'Jenis batuan dari magma?',opts:['Batuan sedimen','Batuan beku','Batuan metamorf','Batuan kapur'],ans:1,exp:'Batuan beku terbentuk dari magma yang mendingin'},
+    ],
+    susah:[
+      {q:'Rantai makanan produsen→konsumen?',opts:['Elang→ular→tikus→padi','Padi→tikus→ular→elang','Tikus→padi→ular→elang','Ular→tikus→padi→elang'],ans:1,exp:'Produsen(padi)→K1→K2→K3'},
+      {q:'Zat klorofil menyerap warna cahaya?',opts:['Hijau','Merah & biru','Kuning','Putih'],ans:1,exp:'Klorofil menyerap merah dan biru'},
+      {q:'Lapisan atmosfer tempat pesawat?',opts:['Troposfer','Stratosfer','Mesosfer','Termosfer'],ans:1,exp:'Stratosfer (10-50km dari bumi)'},
+      {q:'Perubahan gas langsung jadi padat?',opts:['Membeku','Menyublim','Mengkristal','Deposisi'],ans:3,exp:'Deposisi/desublimasi'},
+      {q:'Hewan berkembang biak dengan tunas?',opts:['Hydra','Amuba','Planaria','Cacing'],ans:0,exp:'Hydra berkembang biak dengan tunas'},
+      {q:'Otot yang bekerja tanpa sadar?',opts:['Otot rangka','Otot lurik','Otot polos','Otot tendon'],ans:2,exp:'Otot polos bekerja di luar kesadaran'},
+      {q:'Fungsi hemoglobin?',opts:['Membeku luka','Membawa O₂','Melawan kuman','Mengatur suhu'],ans:1,exp:'Hemoglobin membawa oksigen'},
+      {q:'Sifat cahaya melewati prisma?',opts:['Dipantulkan','Diserap','Dibiaskan & diurai','Diteruskan'],ans:2,exp:'Cahaya dibiaskan menjadi pelangi'},
+      {q:'Hewan tidak bertulang belakang?',opts:['Ikan','Katak','Cumi-cumi','Ular'],ans:2,exp:'Cumi-cumi=invertebrata (avertebrata)'},
+      {q:'Proses fermentasi menghasilkan?',opts:['O₂','CO₂ & alkohol','N₂','H₂O'],ans:1,exp:'Fermentasi→CO₂ + alkohol/asam laktat'},
+      {q:'Bagian sel yang mengatur kegiatan sel?',opts:['Sitoplasma','Membran sel','Inti sel (nukleus)','Mitokondria'],ans:2,exp:'Inti sel (nukleus) mengatur seluruh kegiatan sel'},
+      {q:'Proses pembentukan urine di ginjal?',opts:['Filtrasi→reabsorpsi→sekresi','Sekresi→filtrasi→reabsorpsi','Reabsorpsi→filtrasi→sekresi','Filtrasi→sekresi→reabsorpsi'],ans:0,exp:'Filtrasi→reabsorpsi→sekresi (augmentasi)→urine'},
+      {q:'Jenis simbiosis lebah & bunga?',opts:['Parasitisme','Komensalisme','Mutualisme','Amensalisme'],ans:2,exp:'Mutualisme=saling menguntungkan'},
+      {q:'Satelit alami bumi?',opts:['Matahari','Mars','Bulan','Meteor'],ans:2,exp:'Bulan adalah satelit alami bumi'},
+      {q:'Sistem saraf pusat terdiri dari?',opts:['Jantung & paru-paru','Otak & sumsum tulang belakang','Ginjal & hati','Otot & tulang'],ans:1,exp:'Otak + sumsum tulang belakang = saraf pusat'},
+      {q:'Energi yang tersimpan dalam baterai?',opts:['Energi panas','Energi kimia','Energi cahaya','Energi gerak'],ans:1,exp:'Baterai menyimpan energi kimia'},
+      {q:'Bagian darah yang membawa oksigen?',opts:['Plasma darah','Trombosit','Eritrosit','Leukosit'],ans:2,exp:'Eritrosit (sel darah merah) membawa O₂'},
+      {q:'Gerhana matahari terjadi saat?',opts:['Bulan di antara bumi & matahari','Bumi di antara bulan & matahari','Matahari di antara bumi & bulan','Bumi menjauh dari matahari'],ans:0,exp:'Gerhana matahari: bulan menutupi matahari'},
+      {q:'Mineral yang dibutuhkan untuk tulang?',opts:['Zat besi','Kalsium','Yodium','Vitamin C'],ans:1,exp:'Kalsium penting untuk pertumbuhan tulang'},
+      {q:'Proses pelapukan batuan oleh cuaca?',opts:['Erosi','Sedimentasi','Pelapukan fisika','Abrasi'],ans:2,exp:'Pelapukan fisika=pelapukan oleh perubahan suhu/cuaca'},
+    ]
+  },
+  ips:{label:'IPS',icon:'🌏',
+    mudah:[
+      {q:'Ibu kota Indonesia?',opts:['Surabaya','Bandung','Jakarta','Medan'],ans:2,exp:'Jakarta=ibu kota NKRI'},
+      {q:'Warna bendera Indonesia?',opts:['Merah-putih-biru','Merah-putih','Putih-merah-hijau','Kuning-merah'],ans:1,exp:'Merah atas, putih bawah'},
+      {q:'Presiden pertama Indonesia?',opts:['Soeharto','Soekarno','Habibie','Wahid'],ans:1,exp:'Ir. Soekarno'},
+      {q:'Pulau terbesar di Indonesia?',opts:['Jawa','Sumatera','Kalimantan','Papua'],ans:2,exp:'Kalimantan=terbesar'},
+      {q:'Indonesia merdeka tanggal?',opts:['17 Agustus 1945','17 Juli 1945','17 Agustus 1944','17 September 1945'],ans:0,exp:'17 Agustus 1945'},
+      {q:'Bahasa nasional Indonesia?',opts:['Jawa','Sunda','Indonesia','Melayu'],ans:2,exp:'Bahasa Indonesia'},
+      {q:'Danau terbesar di Indonesia?',opts:['Danau Toba','Danau Poso','Danau Sentani','Danau Matano'],ans:0,exp:'Danau Toba, Sumatera Utara'},
+      {q:'Lagu kebangsaan Indonesia?',opts:['Garuda Pancasila','Halo-Halo Bandung','Indonesia Raya','Maju Tak Gentar'],ans:2,exp:'Indonesia Raya'},
+      {q:'Alat musik tradisional Jawa?',opts:['Angklung','Gamelan','Sasando','Kolintang'],ans:1,exp:'Gamelan=alat musik Jawa'},
+      {q:'Mata uang Indonesia?',opts:['Ringgit','Peso','Rupiah','Baht'],ans:2,exp:'Rupiah (Rp)'},
+      {q:'Gunung berapi paling aktif di Jawa?',opts:['Rinjani','Semeru','Bromo','Merapi'],ans:3,exp:'Gunung Merapi=paling aktif di Jawa'},
+      {q:'Suku asli Papua?',opts:['Dayak','Batak','Dani','Bugis'],ans:2,exp:'Suku Dani adalah suku asli Papua'},
+      {q:'Baju adat Jawa disebut?',opts:['Kebaya','Ulos','Baju Bodo','Kain Batik'],ans:0,exp:'Kebaya=pakaian adat Jawa'},
+      {q:'Tarian tradisional dari Bali?',opts:['Tari Saman','Tari Kecak','Tari Piring','Tari Jaipong'],ans:1,exp:'Tari Kecak berasal dari Bali'},
+      {q:'Rumah adat Jawa disebut?',opts:['Rumah Gadang','Rumah Joglo','Rumah Adat Toraja','Rumah Betawi'],ans:1,exp:'Rumah Joglo=rumah adat Jawa'},
+      {q:'Negara tetangga Indonesia di utara?',opts:['Australia','India','Malaysia','Filipina'],ans:2,exp:'Malaysia berbatasan langsung di utara Kalimantan'},
+      {q:'Waduk terbesar di Indonesia?',opts:['Waduk Jatiluhur','Waduk Gajah Mungkur','Waduk Saguling','Waduk Citarum'],ans:0,exp:'Waduk Jatiluhur, Jawa Barat=terbesar'},
+      {q:'Kepulauan paling timur Indonesia?',opts:['Maluku','Papua','NTT','Sulawesi'],ans:1,exp:'Papua=kepulauan paling timur Indonesia'},
+      {q:'Pahlawan wanita dari Aceh?',opts:['Dewi Sartika','R.A. Kartini','Cut Nyak Dhien','Martha Tiahahu'],ans:2,exp:'Cut Nyak Dhien dari Aceh'},
+      {q:'Candi terkenal di Jawa Tengah?',opts:['Candi Prambanan','Candi Borobudur','Candi Mendut','Semua benar'],ans:3,exp:'Prambanan, Borobudur, dan Mendut ada di Jawa Tengah'},
+    ],
+    sedang:[
+      {q:'Sungai terpanjang di Indonesia?',opts:['Sungai Musi','Sungai Kapuas','Sungai Mahakam','Bengawan Solo'],ans:1,exp:'Sungai Kapuas ~1.143km'},
+      {q:'Bapak Pendidikan Indonesia?',opts:['Ir. Soekarno','Ki Hajar Dewantara','Mohammad Hatta','R.A. Kartini'],ans:1,exp:'Ki Hajar Dewantara, 2 Mei'},
+      {q:'Pulau terpadat di Indonesia?',opts:['Kalimantan','Sumatera','Sulawesi','Jawa'],ans:3,exp:'Jawa=terpadat'},
+      {q:'Gunung tertinggi Indonesia?',opts:['Semeru','Rinjani','Puncak Jaya','Kerinci'],ans:2,exp:'Puncak Jaya 4.884mdpl'},
+      {q:'Proklamasi dibacakan oleh?',opts:['Soeharto & Habibie','Soekarno & Hatta','Soekarno & Syahrir','Hatta & Syahrir'],ans:1,exp:'Soekarno-Hatta, 17 Agustus 1945'},
+      {q:'ASEAN didirikan tahun?',opts:['1965','1967','1970','1945'],ans:1,exp:'8 Agustus 1967'},
+      {q:'Jumlah provinsi Indonesia (2024)?',opts:['34','37','38','40'],ans:2,exp:'38 provinsi'},
+      {q:'Batas utara Indonesia?',opts:['Australia','Malaysia & Filipina','Papua Nugini','Timor Leste'],ans:1,exp:'Malaysia, Singapura, Filipina'},
+      {q:'Pahlawan wanita dari Jawa Tengah?',opts:['Dewi Sartika','R.A. Kartini','Cut Nyak Dhien','Martha Tiahahu'],ans:1,exp:'R.A. Kartini dari Jepara'},
+      {q:'Zona waktu paling timur Indonesia?',opts:['WIB','WITA','WIT','WITE'],ans:2,exp:'WIT=Papua & Maluku'},
+      {q:'Kerajaan Hindu terbesar di Nusantara?',opts:['Kutai','Sriwijaya','Majapahit','Tarumanegara'],ans:2,exp:'Majapahit=kerajaan Hindu terbesar'},
+      {q:'Pendiri Budi Utomo?',opts:['Soekarno','Dr. Wahidin Sudirohusodo','Ki Hajar Dewantara','HOS Tjokroaminoto'],ans:1,exp:'Dr. Wahidin Sudirohusodo, 20 Mei 1908'},
+      {q:'Perjanjian yang mengakui kemerdekaan RI?',opts:['Renville','KMB','Linggarjati','Roem-Royen'],ans:1,exp:'KMB 1949=Belanda akui kedaulatan RI'},
+      {q:'Letak astronomis Indonesia?',opts:['6°LU-11°LS, 95°-141°BT','0°-15°LS, 90°-150°BT','5°LU-10°LS, 95°-140°BT','6°LU-11°LS, 90°-145°BT'],ans:0,exp:'6°LU-11°LS, 95°BT-141°BT'},
+      {q:'Sidang BPUPKI pertama membahas?',opts:['UUD','Dasar negara','Proklamasi','Kabinet'],ans:1,exp:'29 Mei-1 Juni 1945: dasar negara'},
+      {q:'Kerajaan Hindu tertua di Indonesia?',opts:['Majapahit','Sriwijaya','Kutai','Tarumanegara'],ans:2,exp:'Kutai, Kalimantan ~abad ke-4 M'},
+      {q:'VOC berasal dari negara?',opts:['Inggris','Spanyol','Belanda','Portugis'],ans:2,exp:'VOC=perusahaan dagang Belanda'},
+      {q:'Sistem tanam paksa Belanda?',opts:['Sistem liberal','Cultuurstelsel','Agrarische Wet','Preanger Stelsel'],ans:1,exp:'Cultuurstelsel oleh Van den Bosch 1830'},
+      {q:'Pahlawan diasingkan ke Banda Neira?',opts:['Soekarno','Hatta','Sjahrir','Hatta & Sjahrir'],ans:3,exp:'Hatta dan Sjahrir di Banda Neira'},
+      {q:'Tahun berdirinya Majapahit?',opts:['1222','1293','1350','1400'],ans:1,exp:'Majapahit berdiri 1293 M'},
+    ],
+    susah:[
+      {q:'Kerajaan Hindu tertua di Indonesia?',opts:['Majapahit','Sriwijaya','Kutai','Tarumanegara'],ans:2,exp:'Kutai, Kalimantan ~abad ke-4 M'},
+      {q:'VOC berasal dari negara?',opts:['Inggris','Spanyol','Belanda','Portugis'],ans:2,exp:'VOC=perusahaan dagang Belanda'},
+      {q:'Letak astronomis Indonesia?',opts:['6°LU-11°LS, 95°-141°BT','0°-15°LS, 90°-150°BT','5°LU-10°LS, 95°-140°BT','6°LU-11°LS, 90°-145°BT'],ans:0,exp:'6°LU-11°LS, 95°BT-141°BT'},
+      {q:'Cultuurstelsel diterapkan oleh?',opts:['Daendels','Van den Bosch','Raffles','Coen'],ans:1,exp:'Van den Bosch 1830'},
+      {q:'Pahlawan diasingkan ke Banda Neira?',opts:['Soekarno','Hatta','Sjahrir','Hatta & Sjahrir'],ans:3,exp:'Hatta dan Sjahrir di Banda Neira'},
+      {q:'Sidang BPUPKI pertama membahas?',opts:['UUD','Dasar negara','Proklamasi','Kabinet'],ans:1,exp:'29 Mei-1 Juni 1945'},
+      {q:'Tahun berdirinya Majapahit?',opts:['1222','1293','1350','1400'],ans:1,exp:'1293 M'},
+      {q:'KMB mengakui kedaulatan RI tahun?',opts:['1945','1947','1949','1950'],ans:2,exp:'KMB=1949'},
+      {q:'Pendiri Budi Utomo?',opts:['Soekarno','Dr. Wahidin Sudirohusodo','Ki Hajar Dewantara','HOS Tjokroaminoto'],ans:1,exp:'20 Mei 1908'},
+      {q:'Proklamasi kemerdekaan dibacakan di?',opts:['Istana Negara','Jl. Pegangsaan Timur 56','Gedung Pancasila','Lapangan Merdeka'],ans:1,exp:'Jl. Pegangsaan Timur 56, Jakarta'},
+      {q:'Sumpah Pemuda tahun?',opts:['1926','1927','1928','1929'],ans:2,exp:'28 Oktober 1928'},
+      {q:'Nama asli ibu kota baru Indonesia?',opts:['Nusaantara','Nusantara','Palangkaraya','Kalimantan Timur'],ans:1,exp:'Nusantara=ibu kota baru di Kalimantan Timur'},
+      {q:'Perjanjian Renville ditandatangani tahun?',opts:['1946','1947','1948','1949'],ans:2,exp:'Perjanjian Renville=17 Januari 1948'},
+      {q:'Kerajaan Islam pertama di Indonesia?',opts:['Demak','Samudera Pasai','Ternate','Mataram'],ans:1,exp:'Samudera Pasai=kerajaan Islam pertama ~abad 13'},
+      {q:'Tokoh yang menjuluki Indonesia "Zamrud Khatulistiwa"?',opts:['Soekarno','Moh. Yamin','Agus Salim','Van Lith'],ans:0,exp:'Soekarno menyebut Indonesia "Zamrud Khatulistiwa"'},
+      {q:'Agresi Militer Belanda I terjadi tahun?',opts:['1945','1946','1947','1948'],ans:2,exp:'Agresi Militer Belanda I=21 Juli 1947'},
+      {q:'Proklamator kemerdekaan Indonesia?',opts:['Soekarno saja','Hatta saja','Soekarno & Hatta','Soekarno, Hatta & Syahrir'],ans:2,exp:'Soekarno & Hatta=proklamator kemerdekaan RI'},
+      {q:'Perjuangan Cut Nyak Dhien melawan?',opts:['Belanda','Jepang','Inggris','Portugis'],ans:0,exp:'Cut Nyak Dhien berjuang melawan penjajah Belanda'},
+      {q:'Nilai ekspor terbesar Indonesia saat ini?',opts:['Minyak sawit','Batu bara','Karet','Tekstil'],ans:0,exp:'Minyak sawit (CPO)=ekspor terbesar Indonesia'},
+      {q:'Organisasi kepemudaan pertama Indonesia?',opts:['Budi Utomo','Sumpah Pemuda','Jong Java','OSIS'],ans:0,exp:'Budi Utomo (1908)=organisasi modern pertama'},
+    ]
+  },
+  binggris:{label:'Bhs. Inggris',icon:'🇬🇧',
+    mudah:[
+      {q:'What is "kucing"?',opts:['Dog','Cat','Bird','Fish'],ans:1,exp:'"Kucing"=cat'},
+      {q:'"Selamat pagi" in English?',opts:['Good night','Good afternoon','Good morning','Good evening'],ans:2,exp:'"Selamat pagi"=Good morning'},
+      {q:'Color of "merah"?',opts:['Blue','Green','Yellow','Red'],ans:3,exp:'"Merah"=red'},
+      {q:'"Buku" in English?',opts:['Pen','Book','Bag','Ruler'],ans:1,exp:'"Buku"=book'},
+      {q:'Days in a week?',opts:['Five','Six','Seven','Eight'],ans:2,exp:'7 days in a week'},
+      {q:'"Apel" in English?',opts:['Banana','Mango','Apple','Orange'],ans:2,exp:'"Apel"=apple'},
+      {q:'"Ibu" in English?',opts:['Father','Brother','Mother','Sister'],ans:2,exp:'"Ibu"=mother'},
+      {q:'"Sekolah" in English?',opts:['Hospital','Market','School','Library'],ans:2,exp:'"Sekolah"=school'},
+      {q:'"Besar" in English?',opts:['Small','Tall','Big','Far'],ans:2,exp:'"Besar"=big'},
+      {q:'"Hujan" in English?',opts:['Wind','Rain','Sun','Cloud'],ans:1,exp:'"Hujan"=rain'},
+      {q:'"Teman" in English?',opts:['Enemy','Family','Friend','Teacher'],ans:2,exp:'"Teman"=friend'},
+      {q:'"Makan" in English?',opts:['Sleep','Eat','Drink','Run'],ans:1,exp:'"Makan"=eat'},
+      {q:'"Merah" in English?',opts:['Blue','Green','Yellow','Red'],ans:3,exp:'"Merah"=red'},
+      {q:'What is 1+1 in English?',opts:['One','Two','Three','Four'],ans:1,exp:'1+1=two'},
+      {q:'"Rumah" in English?',opts:['School','House','Garden','Market'],ans:1,exp:'"Rumah"=house'},
+      {q:'"Tidur" in English?',opts:['Eat','Run','Sleep','Play'],ans:2,exp:'"Tidur"=sleep'},
+      {q:'"Belajar" in English?',opts:['Play','Study','Work','Rest'],ans:1,exp:'"Belajar"=study'},
+      {q:'"Guru" in English?',opts:['Student','Doctor','Teacher','Nurse'],ans:2,exp:'"Guru"=teacher'},
+      {q:'Days: after Monday?',opts:['Sunday','Wednesday','Tuesday','Thursday'],ans:2,exp:'Monday→Tuesday'},
+      {q:'"Putih" in English?',opts:['Black','White','Grey','Brown'],ans:1,exp:'"Putih"=white'},
+    ],
+    sedang:[
+      {q:'Correct sentence?',opts:['I am go to school','I going to school','I go to school','I goes to school'],ans:2,exp:'"I go to school"'},
+      {q:'"Kemarin" in English?',opts:['Tomorrow','Today','Yesterday','Now'],ans:2,exp:'"Kemarin"=yesterday'},
+      {q:'Plural of "child"?',opts:['Childs','Childes','Childrens','Children'],ans:3,exp:'"Child"→"children"'},
+      {q:'"Hungry" means?',opts:['Mengantuk','Haus','Lapar','Lelah'],ans:2,exp:'"Hungry"=lapar'},
+      {q:'Opposite of "hot"?',opts:['Warm','Cool','Cold','Icy'],ans:2,exp:'Antonim "hot"=cold'},
+      {q:'Correct for She?',opts:['She don\'t like cats','She doesn\'t likes cats','She doesn\'t like cats','She not like cats'],ans:2,exp:'She→doesn\'t+kata kerja dasar'},
+      {q:'Past tense of "eat"?',opts:['Eated','Eaten','Ate','Eat'],ans:2,exp:'"Eat"→past=ate'},
+      {q:'"Mereka" in English?',opts:['We','They','He','She'],ans:1,exp:'"Mereka"=they'},
+      {q:'Plural of "box"?',opts:['Boxs','Boxies','Boxes','Boxen'],ans:2,exp:'"Box"→"boxes"'},
+      {q:'"Beautiful" means?',opts:['Pintar','Cantik/Indah','Kuat','Cepat'],ans:1,exp:'"Beautiful"=cantik/indah'},
+      {q:'Past tense of "go"?',opts:['Goed','Goes','Gone','Went'],ans:3,exp:'"Go"→past=went'},
+      {q:'"Always" means?',opts:['Kadang-kadang','Jarang','Selalu','Tidak pernah'],ans:2,exp:'"Always"=selalu'},
+      {q:'Plural of "leaf"?',opts:['Leafs','Leafes','Leaves','Leavs'],ans:2,exp:'"Leaf"→"leaves"'},
+      {q:'"Heavy" means?',opts:['Ringan','Berat','Kuat','Besar'],ans:1,exp:'"Heavy"=berat'},
+      {q:'Correct: She ___ a doctor.',opts:['am','are','is','be'],ans:2,exp:'She (orang ke-3 tunggal) → is'},
+      {q:'"Delicious" means?',opts:['Pahit','Asam','Lezat/Enak','Manis'],ans:2,exp:'"Delicious"=lezat/enak'},
+      {q:'Opposite of "fast"?',opts:['Quick','Slow','Strong','Weak'],ans:1,exp:'Antonim "fast"=slow'},
+      {q:'"I will study" is in?',opts:['Past tense','Present tense','Future tense','Perfect tense'],ans:2,exp:'"Will+V1"=future tense'},
+      {q:'"Nervous" means?',opts:['Berani','Senang','Gugup/Gelisah','Marah'],ans:2,exp:'"Nervous"=gugup/gelisah'},
+      {q:'Past tense of "write"?',opts:['Writed','Wrote','Written','Writes'],ans:1,exp:'"Write"→past=wrote'},
+    ],
+    susah:[
+      {q:'Question tag: "She likes cats, ___?"',opts:['does she','is she','doesn\'t she','isn\'t she'],ans:2,exp:'Positif→tag negatif: doesn\'t she'},
+      {q:'Passive: "The teacher explains..."',opts:['...lesson explained by...','...lesson is explained by...','...lesson was explained...','...lesson explains...'],ans:1,exp:'S+is/am/are+V3+by+agent'},
+      {q:'Correct Present Perfect?',opts:['I have eat','I has eaten','I have eaten','I had eat'],ans:2,exp:'have/has+past participle'},
+      {q:'"Despite" means?',opts:['Because of','In order to','Although','As a result of'],ans:2,exp:'"Despite"≈although'},
+      {q:'Correct comparative?',opts:['more heavier','more heavy','heavy','heavier'],ans:3,exp:'Adj 1 suku kata+-er→heavier'},
+      {q:'Correct "used to"?',opts:['I used to playing','I used to play','I am used to play','I use to play'],ans:1,exp:'"used to"+V1 infinitif'},
+      {q:'Future Perfect example?',opts:['I will eat','I will have eaten','I am eating','I have eaten'],ans:1,exp:'Future Perfect: will+have+V3'},
+      {q:'Synonym of "intelligent"?',opts:['Brave','Smart','Kind','Strong'],ans:1,exp:'"Intelligent"=smart'},
+      {q:'Reported: He said "I am happy"',opts:['He said he is happy','He said he was happy','He said I am happy','He said he were happy'],ans:1,exp:'am→was (backshift)'},
+      {q:'"Although" in Indonesian?',opts:['Karena','Sehingga','Meskipun','Namun'],ans:2,exp:'"Although"=meskipun'},
+      {q:'Correct passive: "They built the bridge"',opts:['The bridge built by them','The bridge is built by them','The bridge was built by them','The bridge were built by them'],ans:2,exp:'Past passive: was/were+V3'},
+      {q:'"Whereas" is used to?',opts:['Show reason','Show contrast','Show result','Show condition'],ans:1,exp:'"Whereas"=menunjukkan kontras/perbedaan'},
+      {q:'Correct: If I ___ you, I would study harder.',opts:['am','was','were','be'],ans:2,exp:'Conditional type 2: if+were (untuk semua subjek)'},
+      {q:'"Eloquent" means?',opts:['Bodoh','Pandai berbicara','Pemalu','Pemalas'],ans:1,exp:'"Eloquent"=pandai berbicara/fasih'},
+      {q:'Which is a gerund?',opts:['To swim is fun','Swimming is fun','Swim is fun','He swims fun'],ans:1,exp:'Gerund=V+ing sebagai subjek/objek'},
+      {q:'Plural of "phenomenon"?',opts:['Phenomenons','Phenomena','Phenomenas','Phenomenes'],ans:1,exp:'"Phenomenon"→"phenomena" (dari bahasa Latin)'},
+      {q:'"Despite" vs "Although": difference?',opts:['Sama saja','Despite+noun, although+clause','Despite+clause, although+noun','Keduanya+clause'],ans:1,exp:'"Despite"+noun/gerund; "although"+klausa lengkap'},
+      {q:'Antonym of "mandatory"?',opts:['Required','Compulsory','Optional','Necessary'],ans:2,exp:'"Mandatory"=wajib; antonim="optional"=opsional'},
+      {q:'Correct: She suggested ___ early.',opts:['to leave','leaving','leave','left'],ans:1,exp:'"Suggest"+gerund (V+ing)'},
+      {q:'"Procrastinate" means?',opts:['Bekerja keras','Menunda pekerjaan','Belajar rajin','Bergerak cepat'],ans:1,exp:'"Procrastinate"=menunda-nunda pekerjaan'},
+    ]
+  },
+  pkn:{label:'PKN',icon:'🇮🇩',
+    mudah:[
+      {q:'Pancasila memiliki berapa sila?',opts:['3','4','5','6'],ans:2,exp:'Pancasila=5 sila'},
+      {q:'Sila pertama Pancasila?',opts:['Kemanusiaan yang adil','Ketuhanan Yang Maha Esa','Persatuan Indonesia','Keadilan sosial'],ans:1,exp:'Sila ke-1: Ketuhanan Yang Maha Esa'},
+      {q:'Semboyan bangsa Indonesia?',opts:['Bhinneka Tunggal Ika','Garuda Pancasila','Merdeka atau Mati','Bersatu Kita Teguh'],ans:0,exp:'Bhinneka Tunggal Ika'},
+      {q:'Kepala negara Indonesia?',opts:['Perdana Menteri','Gubernur','Presiden','Menteri'],ans:2,exp:'Presiden'},
+      {q:'Hari Sumpah Pemuda tiap?',opts:['20 Mei','28 Oktober','17 Agustus','2 Mei'],ans:1,exp:'28 Oktober 1928'},
+      {q:'Lambang negara Indonesia?',opts:['Harimau','Komodo','Garuda Pancasila','Banteng'],ans:2,exp:'Garuda Pancasila'},
+      {q:'Hari Pendidikan Nasional tiap?',opts:['28 Oktober','17 Agustus','2 Mei','20 Mei'],ans:2,exp:'2 Mei=Hardiknas'},
+      {q:'Sila ke-2 Pancasila?',opts:['Ketuhanan Yang Maha Esa','Kemanusiaan yang Adil dan Beradab','Persatuan Indonesia','Keadilan Sosial'],ans:1,exp:'Sila ke-2: Kemanusiaan'},
+      {q:'Kewajiban warga negara Indonesia?',opts:['Hanya berdoa','Membayar pajak & menaati hukum','Hanya bekerja','Hanya ikut pemilu'],ans:1,exp:'Membayar pajak dan menaati hukum'},
+      {q:'Hak warga negara Indonesia?',opts:['Hanya bekerja','Hanya bayar pajak','Mendapat pendidikan & perlindungan','Hanya ikut pemilu'],ans:2,exp:'Mendapat pendidikan dan perlindungan'},
+      {q:'Sila ke-3 Pancasila berbunyi?',opts:['Keadilan Sosial','Persatuan Indonesia','Kerakyatan','Kemanusiaan'],ans:1,exp:'Sila ke-3: Persatuan Indonesia'},
+      {q:'Hari Kebangkitan Nasional tiap?',opts:['2 Mei','17 Agustus','20 Mei','28 Oktober'],ans:2,exp:'20 Mei=Hari Kebangkitan Nasional'},
+      {q:'Presiden Indonesia dipilih oleh?',opts:['DPR','MPR','Rakyat langsung','Mahkamah Agung'],ans:2,exp:'Presiden dipilih langsung oleh rakyat'},
+      {q:'Tempat sidang DPR/MPR?',opts:['Istana Negara','Gedung Sate','Gedung DPR/MPR Senayan','Balai Kota'],ans:2,exp:'Gedung DPR/MPR di Senayan'},
+      {q:'Sila ke-4 Pancasila?',opts:['Persatuan Indonesia','Keadilan Sosial','Kerakyatan yang Dipimpin...','Kemanusiaan'],ans:2,exp:'Sila ke-4: Kerakyatan yang Dipimpin oleh Hikmat...'},
+      {q:'Hari lahir Pancasila tiap?',opts:['17 Agustus','1 Juni','28 Oktober','2 Mei'],ans:1,exp:'1 Juni=Hari Lahir Pancasila'},
+      {q:'Sila ke-5 Pancasila berbunyi?',opts:['Persatuan Indonesia','Keadilan Sosial bagi seluruh rakyat','Ketuhanan Yang Maha Esa','Kemanusiaan'],ans:1,exp:'Sila ke-5: Keadilan Sosial'},
+      {q:'Jumlah bulu sayap Garuda Pancasila?',opts:['16','17','18','19'],ans:1,exp:'17 bulu sayap=tanggal proklamasi 17'},
+      {q:'Jumlah bulu ekor Garuda Pancasila?',opts:['7','8','9','10'],ans:1,exp:'8 bulu ekor=bulan Agustus ke-8'},
+      {q:'Warna perisai Garuda Pancasila bagian tengah?',opts:['Merah','Hitam','Putih','Emas'],ans:1,exp:'Bagian tengah perisai berwarna hitam'},
+    ],
+    sedang:[
+      {q:'UUD 1945 disahkan tanggal?',opts:['17 Agustus 1945','18 Agustus 1945','1 Juni 1945','22 Juni 1945'],ans:1,exp:'18 Agustus 1945 oleh PPKI'},
+      {q:'Sila ke-3 dilambangkan dengan?',opts:['Bintang','Rantai','Pohon beringin','Kepala banteng'],ans:2,exp:'Pohon beringin=Persatuan'},
+      {q:'Lembaga pembuat UU di Indonesia?',opts:['MA','KPK','DPR','BPK'],ans:2,exp:'DPR=lembaga legislatif'},
+      {q:'Hak anak yang wajib dipenuhi negara?',opts:['Hak bermain saja','Hak pendidikan & kesehatan','Hak memilih presiden','Hak bekerja'],ans:1,exp:'Pendidikan, kesehatan, perlindungan'},
+      {q:'Pemilu di Indonesia setiap?',opts:['3 tahun','4 tahun','5 tahun','6 tahun'],ans:2,exp:'Setiap 5 tahun'},
+      {q:'Nilai sila ke-2 Pancasila?',opts:['Ketuhanan','Kemanusiaan','Persatuan','Kerakyatan'],ans:1,exp:'Sila ke-2=Kemanusiaan'},
+      {q:'Lembaga pengawas keuangan negara?',opts:['KPK','BPK','MA','DPR'],ans:1,exp:'BPK=Badan Pemeriksa Keuangan'},
+      {q:'Sila ke-4 dilambangkan dengan?',opts:['Bintang','Rantai','Pohon beringin','Kepala banteng'],ans:3,exp:'Kepala banteng=Kerakyatan'},
+      {q:'Sistem pemerintahan Indonesia?',opts:['Monarki','Parlementer','Presidensial','Federal'],ans:2,exp:'Presidensial'},
+      {q:'Pasal UUD 1945 tentang hak pendidikan?',opts:['Pasal 27','Pasal 28','Pasal 31','Pasal 34'],ans:2,exp:'Pasal 31 UUD 1945'},
+      {q:'Gotong royong tercermin pada sila?',opts:['Sila 1','Sila 3','Sila 4','Sila 5'],ans:3,exp:'Sila ke-5: Keadilan Sosial'},
+      {q:'Pembukaan UUD 1945 terdiri dari?',opts:['3 alinea','4 alinea','5 alinea','6 alinea'],ans:1,exp:'4 alinea'},
+      {q:'Nilai Pancasila yang mengutamakan musyawarah?',opts:['Sila 1','Sila 2','Sila 4','Sila 5'],ans:2,exp:'Sila ke-4: musyawarah mufakat'},
+      {q:'Tugas pokok TNI?',opts:['Menjaga keamanan dalam negeri','Menegakkan hukum','Mempertahankan kedaulatan','Mengurus pajak'],ans:2,exp:'TNI=mempertahankan kedaulatan NKRI'},
+      {q:'Asas pemilu LUBER JURDIL?',opts:['Langsung,Umum,Bebas,Rahasia','LUBER+Jujur,Adil','Langsung,Bebas,Rahasia','Umum,Bebas,Jujur,Adil'],ans:1,exp:'LUBER+JURDIL=Langsung,Umum,Bebas,Rahasia,Jujur,Adil'},
+      {q:'Mahkamah Konstitusi (MK) bertugas?',opts:['Mengadili pidana','Menguji UU terhadap UUD','Memeriksa keuangan','Membuat UU'],ans:1,exp:'MK menguji UU terhadap UUD 1945'},
+      {q:'HAM di Indonesia diatur dalam?',opts:['Pasal 28A-28J UUD 1945','Pasal 30-34 UUD 1945','Pasal 27 UUD 1945','UU No.1 Tahun 2000'],ans:0,exp:'Pasal 28A-28J UUD 1945'},
+      {q:'Lembaga yang mengawasi presiden?',opts:['MA','MK','MPR','DPR'],ans:3,exp:'DPR mengawasi pemerintahan'},
+      {q:'Sila ke-1 dilambangkan dengan?',opts:['Bintang','Rantai','Pohon beringin','Kepala banteng'],ans:0,exp:'Bintang=Ketuhanan Yang Maha Esa'},
+      {q:'Hak asasi manusia bersifat?',opts:['Relatif','Universal & tidak dapat dicabut','Terbatas','Tergantung negara'],ans:1,exp:'HAM bersifat universal dan tidak dapat dicabut'},
+    ],
+    susah:[
+      {q:'Pasal UUD 1945 tentang hak pendidikan?',opts:['Pasal 27','Pasal 28','Pasal 31','Pasal 34'],ans:2,exp:'Pasal 31 UUD 1945'},
+      {q:'Gotong royong tercermin pada sila?',opts:['Sila 1','Sila 3','Sila 4','Sila 5'],ans:3,exp:'Sila ke-5'},
+      {q:'Sidang BPUPKI pertama membahas?',opts:['UUD','Dasar negara','Proklamasi','Kabinet'],ans:1,exp:'29 Mei-1 Juni 1945'},
+      {q:'HAM di Indonesia diatur dalam?',opts:['Pasal 28A-28J','Pasal 30-34','Pasal 27','UU No.1/2000'],ans:0,exp:'Pasal 28A sampai 28J UUD 1945'},
+      {q:'Lembaga yang mengawasi presiden?',opts:['MA','MK','MPR','DPR'],ans:3,exp:'DPR mengawasi pemerintahan presiden'},
+      {q:'Pembukaan UUD 1945 terdiri dari?',opts:['3 alinea','4 alinea','5 alinea','6 alinea'],ans:1,exp:'4 alinea'},
+      {q:'Nilai Pancasila musyawarah=sila?',opts:['1','2','4','5'],ans:2,exp:'Sila ke-4: musyawarah mufakat'},
+      {q:'Tugas pokok TNI?',opts:['Keamanan dalam negeri','Menegakkan hukum','Mempertahankan kedaulatan','Mengurus pajak'],ans:2,exp:'TNI=pertahanan kedaulatan'},
+      {q:'Asas pemilu LUBER JURDIL artinya?',opts:['Langsung,Umum,Bebas,Rahasia','LUBER+Jujur,Adil','Langsung,Bebas,Rahasia','Umum,Bebas,Jujur'],ans:1,exp:'Langsung,Umum,Bebas,Rahasia,Jujur,Adil'},
+      {q:'Mahkamah Konstitusi (MK) bertugas?',opts:['Mengadili pidana','Menguji UU terhadap UUD','Memeriksa keuangan','Membuat UU'],ans:1,exp:'MK=menguji UU terhadap UUD'},
+      {q:'Pengertian demokrasi Pancasila?',opts:['Kekuasaan raja tertinggi','Kekuasaan rakyat berdasar Pancasila','Kekuasaan militer','Kekuasaan partai'],ans:1,exp:'Demokrasi Pancasila=kekuasaan rakyat berdasarkan nilai Pancasila'},
+      {q:'Negara hukum (rechtsstaat) artinya?',opts:['Kekuasaan tertinggi ada di militer','Semua tindakan berdasarkan hukum','Hukum dibuat penguasa','Rakyat bebas dari hukum'],ans:1,exp:'Rechtsstaat=semua tindakan berdasarkan hukum'},
+      {q:'Otonomi daerah diatur dalam UU?',opts:['UU No.22/1999','UU No.32/2004','UU No.23/2014','UU No.12/2008'],ans:2,exp:'UU No.23 Tahun 2014 tentang Pemerintahan Daerah'},
+      {q:'Pengertian Bhinneka Tunggal Ika?',opts:['Bersatu kita teguh','Berbeda-beda tetapi tetap satu','Satu nusa satu bangsa','Indonesia tanah airku'],ans:1,exp:'Bhinneka Tunggal Ika=berbeda-beda tetapi tetap satu'},
+      {q:'Badan yang membuat UU bersama presiden?',opts:['DPD','DPR','MPR','MA'],ans:1,exp:'DPR bersama presiden membuat UU'},
+      {q:'Tujuan negara RI dalam Pembukaan UUD?',opts:['3 tujuan','4 tujuan','5 tujuan','6 tujuan'],ans:1,exp:'4 tujuan: melindungi, memajukan, mencerdaskan, ketertiban dunia'},
+      {q:'Fungsi MPR saat ini?',opts:['Membuat UU','Mengubah & menetapkan UUD','Mengadili perkara','Memeriksa keuangan'],ans:1,exp:'MPR=mengubah dan menetapkan UUD'},
+      {q:'Prinsip trias politica terdiri dari?',opts:['Legislatif,Eksekutif,Yudikatif','Presiden,DPR,MA','TNI,Polri,KPK','Pusat,Daerah,Desa'],ans:0,exp:'Trias politica: legislatif, eksekutif, yudikatif'},
+      {q:'Lembaga peradilan tertinggi di Indonesia?',opts:['Mahkamah Agung','Mahkamah Konstitusi','Komisi Yudisial','Pengadilan Negeri'],ans:0,exp:'Mahkamah Agung (MA)=peradilan tertinggi'},
+      {q:'Pasal UUD yang mengatur kebebasan berpendapat?',opts:['Pasal 27','Pasal 28','Pasal 29','Pasal 30'],ans:1,exp:'Pasal 28 dan 28E UUD 1945 mengatur kebebasan berpendapat'},
+    ]
+  },
+  bahasa:{label:'Bhs. Indonesia',icon:'📝',
+    mudah:[
+      {q:'Antonim dari "panjang"?',opts:['Tinggi','Besar','Pendek','Jauh'],ans:2,exp:'Antonim=pendek'},
+      {q:'Sinonim dari "gembira"?',opts:['Sedih','Senang','Marah','Takut'],ans:1,exp:'"Gembira"=senang'},
+      {q:'Kata dasar dari "berlari"?',opts:['Berlari','Lari','Ari','Berl'],ans:1,exp:'Ber-+lari'},
+      {q:'Kalimat tanya diakhiri tanda?',opts:['Titik (.)','Seru (!)','Tanya (?)','Koma (,)'],ans:2,exp:'Kalimat tanya→(?)'},
+      {q:'Antonim dari "gelap"?',opts:['Redup','Temaram','Terang','Suram'],ans:2,exp:'Antonim=terang'},
+      {q:'Huruf kapital dipakai pada?',opts:['Setiap kata','Awal kalimat & nama diri','Kata benda','Kata sifat'],ans:1,exp:'Awal kalimat dan nama diri'},
+      {q:'Sinonim dari "besar"?',opts:['Kecil','Agung','Sempit','Tipis'],ans:1,exp:'"Besar"=agung'},
+      {q:'Kata "membaca" berawalan?',opts:['Me-','Ber-','Di-','Ter-'],ans:0,exp:'Me-+baca=membaca'},
+      {q:'Antonim dari "naik"?',opts:['Tinggi','Jatuh','Turun','Terbang'],ans:2,exp:'Antonim=turun'},
+      {q:'Kalimat berita diakhiri tanda?',opts:['Koma (,)','Tanya (?)','Titik (.)','Seru (!)'],ans:2,exp:'Kalimat berita→titik (.)'},
+      {q:'Sinonim dari "cantik"?',opts:['Buruk','Jelek','Indah','Kotor'],ans:2,exp:'"Cantik"=indah'},
+      {q:'Antonim dari "berani"?',opts:['Kuat','Takut','Pintar','Malas'],ans:1,exp:'Antonim "berani"=takut'},
+      {q:'Kata dasar dari "pembelajaran"?',opts:['Belajar','Ajar','Pembelajaran','Pelajaran'],ans:1,exp:'Pe-+ajar+an=pelajaran; ber-+ajar=belajar→pembelajaran'},
+      {q:'Apa itu kalimat perintah?',opts:['Kalimat bertanya','Kalimat menyuruh','Kalimat berita','Kalimat seru'],ans:1,exp:'Kalimat perintah=menyuruh/meminta orang melakukan sesuatu'},
+      {q:'Sinonim dari "cerdas"?',opts:['Bodoh','Malas','Pandai','Lemah'],ans:2,exp:'"Cerdas"=pandai'},
+      {q:'Antonim dari "rajin"?',opts:['Pandai','Malas','Bodoh','Lamban'],ans:1,exp:'Antonim=malas'},
+      {q:'Tanda baca di akhir kalimat seru?',opts:['Titik (.)','Koma (,)','Tanya (?)','Seru (!)'],ans:3,exp:'Kalimat seru→tanda seru (!)'},
+      {q:'Sinonim dari "susah"?',opts:['Mudah','Gampang','Sulit','Ringan'],ans:2,exp:'"Susah"=sulit'},
+      {q:'Antonim dari "pagi"?',opts:['Siang','Sore','Malam','Subuh'],ans:2,exp:'Antonim "pagi"=malam'},
+      {q:'Kata depan yang menyatakan tempat?',opts:['Dan','Atau','Di','Tetapi'],ans:2,exp:'"Di"=kata depan menyatakan tempat'},
+    ],
+    sedang:[
+      {q:'Kalimat dengan tanda koma yang benar?',opts:['Saya suka makan, nasi dan sayur','Hari ini, saya pergi ke sekolah','Saya, pergi ke sekolah','Saya pergi ke sekolah, hari ini'],ans:1,exp:'Koma setelah keterangan di awal kalimat'},
+      {q:'Paragraf yang memuat ide pokok?',opts:['Paragraf penutup','Paragraf pendukung','Paragraf utama','Paragraf deskripsi'],ans:2,exp:'Paragraf utama=gagasan pokok'},
+      {q:'Contoh kata majemuk?',opts:['Berlari cepat','Rumah sakit','Sangat besar','Dengan segera'],ans:1,exp:'"Rumah sakit"=kata majemuk'},
+      {q:'Paragraf menceritakan urutan kejadian?',opts:['Deskripsi','Persuasi','Narasi','Eksposisi'],ans:2,exp:'Narasi=urutan kejadian'},
+      {q:'"Memperindah" dibentuk dari?',opts:['Me-+per-+indah','Mem-+indah','Memper-+indah','Me-+indah'],ans:0,exp:'Me-+per-+indah'},
+      {q:'Paragraf berisi pendapat + ajakan?',opts:['Narasi','Deskripsi','Persuasi','Eksposisi'],ans:2,exp:'Persuasi=pendapat+ajakan'},
+      {q:'Jenis kalimat "Tolong tutup pintunya!"?',opts:['Kalimat berita','Kalimat tanya','Kalimat perintah','Kalimat seru'],ans:2,exp:'Kalimat perintah'},
+      {q:'Pemenggalan suku kata "membaca"?',opts:['mem-ba-ca','me-mba-ca','m-em-ba-ca','mem-bac-a'],ans:0,exp:'"Membaca"=mem-ba-ca'},
+      {q:'Kata berimbuhan bermakna "menjadi"?',opts:['Berlari','Kehujanan','Memerah','Termakan'],ans:2,exp:'"Memerah"=menjadi merah'},
+      {q:'Kalimat majemuk setara menggunakan?',opts:['Karena,sehingga','Dan,atau,tetapi','Jika,supaya','Ketika,setelah'],ans:1,exp:'Konjungsi setara: dan,atau,tetapi'},
+      {q:'Paragraf menggambarkan objek secara detail?',opts:['Narasi','Deskripsi','Persuasi','Argumentasi'],ans:1,exp:'Deskripsi=menggambarkan objek secara rinci'},
+      {q:'"Homonim" adalah?',opts:['Kata bersinonim','Kata berlafal sama beda makna','Kata berantonim','Kata berimbuhan sama'],ans:1,exp:'Homonim=lafal sama, makna berbeda'},
+      {q:'Majas perbandingan dengan "seperti/bagai"?',opts:['Metafora','Personifikasi','Simile','Hiperbola'],ans:2,exp:'Simile=perbandingan eksplisit'},
+      {q:'Penulisan gelar yang benar?',opts:['Dr.Budi Santoso','Dr. Budi Santoso, M.Pd.','dr budi santoso','Dr Budi Santoso'],ans:1,exp:'Gelar: titik, koma sebelum gelar akhir'},
+      {q:'Kalimat pasif dari "Ibu memasak nasi"?',opts:['Nasi dimasak ibu','Nasi dimasak oleh ibu','Nasi di masak oleh ibu','Nasi memasak ibu'],ans:1,exp:'Nasi+dimasak+oleh+pelaku'},
+      {q:'Konjungsi pertentangan?',opts:['Dan,serta','Karena,sebab','Tetapi,namun','Kemudian,lalu'],ans:2,exp:'"Tetapi/namun"=konjungsi pertentangan'},
+      {q:'Paragraf deduktif vs induktif?',opts:['Jumlah kalimat','Posisi kalimat utama','Jenis kata','Panjang paragraf'],ans:1,exp:'Deduktif=kalimat utama di awal; induktif=di akhir'},
+      {q:'Majas sifat manusia pada benda?',opts:['Simile','Hiperbola','Personifikasi','Metafora'],ans:2,exp:'Personifikasi=sifat manusia pada benda mati'},
+      {q:'Kata "mempermasalahkan" berawalan?',opts:['Me-+per-','Mem-','Memper-','Me-'],ans:0,exp:'Me-+per-+masalah+kan'},
+      {q:'Kalimat majemuk bertingkat ditandai?',opts:['Dan,atau','Karena,meskipun,jika','Tetapi,namun','Lalu,kemudian'],ans:1,exp:'Konjungsi subordinatif: karena,meskipun,jika,ketika'},
+    ],
+    susah:[
+      {q:'Majas perbandingan dengan "seperti/bagai"?',opts:['Metafora','Personifikasi','Simile','Hiperbola'],ans:2,exp:'Simile=perbandingan eksplisit'},
+      {q:'Penulisan gelar yang benar?',opts:['Dr.Budi Santoso','Dr. Budi Santoso, M.Pd.','dr budi santoso','Dr Budi Santoso'],ans:1,exp:'Titik setelah Dr., koma sebelum gelar akhir'},
+      {q:'Kalimat pasif dari "Ibu memasak nasi"?',opts:['Nasi dimasak ibu','Nasi dimasak oleh ibu','Nasi di masak oleh ibu','Nasi memasak ibu'],ans:1,exp:'Nasi+dimasak+oleh+pelaku'},
+      {q:'Konjungsi pertentangan?',opts:['Dan,serta','Karena,sebab','Tetapi,namun','Kemudian,lalu'],ans:2,exp:'"Tetapi/namun"'},
+      {q:'Paragraf deduktif vs induktif?',opts:['Jumlah kalimat','Posisi kalimat utama','Jenis kata','Panjang paragraf'],ans:1,exp:'Deduktif=awal; induktif=akhir'},
+      {q:'Majas sifat manusia pada benda?',opts:['Simile','Hiperbola','Personifikasi','Metafora'],ans:2,exp:'Personifikasi'},
+      {q:'Kata bermakna "menjadi"?',opts:['Berlari','Kehujanan','Memerah','Termakan'],ans:2,exp:'"Memerah"=menjadi merah'},
+      {q:'Kalimat majemuk setara menggunakan?',opts:['Karena,sehingga','Dan,atau,tetapi','Jika,supaya','Ketika,setelah'],ans:1,exp:'Konjungsi setara: dan,atau,tetapi'},
+      {q:'"Homonim" adalah?',opts:['Kata bersinonim','Lafal sama beda makna','Kata berantonim','Imbuhan sama'],ans:1,exp:'Homonim=lafal sama, makna berbeda'},
+      {q:'Pemenggalan "pembelajaran"?',opts:['pem-bel-a-jar-an','pem-be-la-jar-an','pem-bel-ajar-an','pembelajaran'],ans:1,exp:'"Pembelajaran"=pem-be-la-jar-an'},
+      {q:'"Polisemi" berbeda dengan "homonim" karena?',opts:['Sama persis','Polisemi=1 kata banyak makna terkait','Homonim=1 kata banyak makna terkait','Polisemi=2 kata sama lafal'],ans:1,exp:'Polisemi=satu kata punya banyak makna yang masih berkaitan'},
+      {q:'Kata "mempertanggungjawabkan" berawalan?',opts:['Mem-','Me-+per-','Memper-','Me-+per-+tanggung'],ans:1,exp:'Me-+per-+tanggungjawab+kan'},
+      {q:'Paragraf yang memaparkan fakta dan data?',opts:['Narasi','Deskripsi','Persuasi','Eksposisi'],ans:3,exp:'Eksposisi=memaparkan fakta, informasi, dan data'},
+      {q:'Konjungsi korelatif contohnya?',opts:['Dan,atau,tetapi','Baik...maupun..., tidak hanya...tetapi juga...','Karena,sehingga','Jika,maka'],ans:1,exp:'Konjungsi korelatif: baik...maupun..., tidak hanya...tetapi juga...'},
+      {q:'Kalimat ambigu artinya?',opts:['Kalimat yang jelas','Kalimat yang bermakna ganda','Kalimat yang panjang','Kalimat yang pendek'],ans:1,exp:'Ambigu=kalimat bermakna ganda/tidak jelas'},
+      {q:'Pengertian diksi?',opts:['Gaya penulisan','Pemilihan kata yang tepat','Urutan kalimat','Jenis paragraf'],ans:1,exp:'Diksi=pemilihan kata yang tepat dan sesuai konteks'},
+      {q:'Ciri teks prosedur?',opts:['Menceritakan tokoh','Langkah-langkah berurutan','Pendapat+fakta','Menggambarkan suasana'],ans:1,exp:'Teks prosedur berisi langkah-langkah berurutan'},
+      {q:'"Pars pro toto" dalam bahasa Indonesia?',opts:['Majas personifikasi','Majas sinekdoke sebagian','Majas hiperbola','Majas litotes'],ans:1,exp:'Pars pro toto=sinekdoke: sebagian mewakili keseluruhan'},
+      {q:'Kalimat efektif memiliki ciri?',opts:['Panjang dan bertele-tele','Tepat, jelas, dan tidak ambigu','Banyak kata sifat','Menggunakan bahasa daerah'],ans:1,exp:'Kalimat efektif: tepat, jelas, tidak ambigu, sesuai kaidah'},
+      {q:'Teks argumentasi berbeda dari persuasi karena?',opts:['Sama saja','Argumentasi fokus pada bukti & logika, bukan ajakan','Persuasi fokus pada data','Argumentasi mengajak pembaca'],ans:1,exp:'Argumentasi=meyakinkan dengan bukti & logika; persuasi=mengajak'},
+    ]
+  }
+};
+
+// ─── STATE ────────────────────────────────────────────────
+let curDiff='mudah', curSubj=null, curLevel=1;
+let curQ=0, curScore=0, livesLeft=3, wrongThisQ=0;
+let timerInterval=null, timerLeft=30, maxTimer=30;
+let sessionStart=0, totalElapsed=0, qStart=0;
+let shuffledQs=[], lastResult=null;
+let lbFilter='Semua', lbSort='speed';
+let pendingLBSave=null;
+
+// Progress saved in localStorage: key = subj_diff_level → stars (1-3) or 0
+function progressKey(s,d,l){return `prog_${s}_${d}_${l}`}
+function getStars(s,d,l){return parseInt(localStorage.getItem(progressKey(s,d,l))||'0')}
+function setStars(s,d,l,stars){localStorage.setItem(progressKey(s,d,l),stars)}
+function isUnlocked(s,d,l){
+  if(l===1)return true;
+  return getStars(s,d,l-1)>0;
+}
+
+// ─── SCREENS ─────────────────────────────────────────────
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active');s.style.display='none'});
+  const el=document.getElementById(id);
+  el.style.display='flex';
+  setTimeout(()=>el.classList.add('active'),10);
+}
+function goHome(){stopTimer();showScreen('s-home')}
+
+// ─── HOME ─────────────────────────────────────────────────
+function setDiff(d){
+  curDiff=d;
+  ['mudah','sedang','susah'].forEach(k=>{
+    const btn=document.getElementById('db-'+k);
+    btn.className='diff-btn'+(k===d?' a'+k[0]:'');
+  });
+  renderSubjects();
+}
+
+function starsForSubj(s,d){
+  let total=0;
+  for(let l=1;l<=MAX_LEVELS;l++)total+=getStars(s,d,l);
+  return total;
+}
+
+function renderSubjects(){
+  const dc=DIFF[curDiff];
+  document.getElementById('subj-grid').innerHTML=Object.entries(bank).map(([id,s],i)=>{
+    const totalStars=starsForSubj(id,curDiff);
+    const maxStars=MAX_LEVELS*3;
+    const starStr=totalStars>0?`<div class="stars-row">${'⭐'.repeat(Math.min(totalStars,5))}${totalStars>5?'+':''}</div>`:'';
+    return`<div class="subj-card" onclick="openLevelSelect('${id}')" style="border-top:3px solid ${COLORS[i%COLORS.length]}">
+      <div class="si">${s.icon}</div>
+      <div class="sl">${s.label}</div>
+      <div class="sn">${totalStars}/${maxStars}⭐</div>
+      ${starStr}
+      <span class="sd" style="background:${dc.tag_bg};color:${dc.tag_col}">${dc.label}</span>
+    </div>`;
+  }).join('');
+}
+
+// ─── LEVEL SELECT ─────────────────────────────────────────
+function openLevelSelect(subjId){
+  curSubj=subjId;
+  const s=bank[subjId];
+  document.getElementById('lv-title').textContent=s.icon+' '+s.label;
+  document.getElementById('lv-info').textContent=`${DIFF[curDiff].label} — Selesaikan semua soal untuk naik level!`;
+  renderLevelGrid();
+  showScreen('s-level');
+}
+
+function renderLevelGrid(){
+  const medals=['🥉','🥈','🥇'];
+  document.getElementById('lv-grid').innerHTML=Array.from({length:MAX_LEVELS},(_,i)=>{
+    const lv=i+1;
+    const stars=getStars(curSubj,curDiff,lv);
+    const unlocked=isUnlocked(curSubj,curDiff,lv);
+    const isDone=stars>0;
+    const isCur=!isDone&&unlocked;
+    let cls='lv-card';
+    if(!unlocked)cls+=' locked';
+    else if(isDone)cls+=' done';
+    else if(isCur)cls+=' current';
+    const timer=getLevelTimer(lv);
+    const lives=getLevelLives(lv);
+    const starsDisplay=isDone?'⭐'.repeat(stars)+'☆'.repeat(3-stars):'☆☆☆';
+    return`<div class="${cls}" onclick="${unlocked?`startLevel(${lv})`:'showLocked()'}">
+      <div class="lv-num">${unlocked?lv:'🔒'}</div>
+      <div class="lv-stars">${starsDisplay}</div>
+      <div class="lv-badge">${timer}s·${lives}❤️</div>
+    </div>`;
+  }).join('');
+}
+
+function showLocked(){
+  alert('Selesaikan level sebelumnya dulu! 🔒');
+}
+
+function showLevelSelect(){
+  renderLevelGrid();
+  showScreen('s-level');
+}
+
+// ─── QUIZ ─────────────────────────────────────────────────
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startLevel(lv){
+  curLevel=lv;
+  curQ=0; curScore=0;
+  livesLeft=getLevelLives(lv);
+  maxTimer=getLevelTimer(lv);
+  totalElapsed=0;
+  sessionStart=Date.now();
+  wrongThisQ=0;
+
+  // Shuffle bank questions and pick QUESTIONS_PER_LEVEL
+  const allQs=bank[curSubj][curDiff];
+  shuffledQs=shuffle(allQs).slice(0,QUESTIONS_PER_LEVEL);
+
+  const s=bank[curSubj];
+  document.getElementById('q-title').textContent=s.icon+' '+s.label;
+  document.getElementById('q-sub').textContent=DIFF[curDiff].label+' • ⏱️ '+maxTimer+'s/soal';
+  document.getElementById('q-lvl-pill').textContent='Level '+lv;
+  document.getElementById('q-score').textContent='⭐ 0';
+  document.getElementById('q-prog-fill').style.background=COLORS[Object.keys(bank).indexOf(curSubj)%COLORS.length];
+  renderLives();
+  showScreen('s-quiz');
+  renderQ();
+}
+
+function retryLevel(){startLevel(curLevel)}
+function goNextLevel(){
+  if(curLevel<MAX_LEVELS)startLevel(curLevel+1);
+  else{alert('🏆 Selamat! Kamu sudah menyelesaikan semua level!');goHome();}
+}
+
+function renderLives(){
+  document.getElementById('lives-row').innerHTML=
+    Array.from({length:getLevelLives(curLevel)},(_,i)=>
+      `<span class="life ${i>=livesLeft?'lost':''}">❤️</span>`
+    ).join('');
+}
+
+function startTimer(){
+  stopTimer();
+  timerLeft=maxTimer;
+  qStart=Date.now();
+  updateTimerUI();
+  timerInterval=setInterval(()=>{
+    timerLeft--;
+    updateTimerUI();
+    if(timerLeft<=0){stopTimer();onTimeout();}
+  },1000);
+}
+
+function stopTimer(){
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+}
+
+function updateTimerUI(){
+  const num=document.getElementById('t-num');
+  const arc=document.getElementById('t-arc');
+  if(!num||!arc)return;
+  num.textContent=timerLeft;
+  const r=22, circ=2*Math.PI*r;
+  const offset=circ*(1-timerLeft/maxTimer);
+  arc.style.strokeDasharray=circ;
+  arc.style.strokeDashoffset=offset;
+  const frac=timerLeft/maxTimer;
+  if(frac<=0.33){arc.style.stroke='#E24B4A';num.className='t-num red';}
+  else if(frac<=0.66){arc.style.stroke='#FBBF24';num.className='t-num';}
+  else{arc.style.stroke='#6C63FF';num.className='t-num';}
+  const elapsed=((Date.now()-sessionStart)/1000).toFixed(1);
+  const tt=document.getElementById('total-t');
+  if(tt)tt.textContent=elapsed+'s';
+}
+
+function onTimeout(){
+  livesLeft--;
+  renderLives();
+  const q=shuffledQs[curQ];
+  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  document.getElementById('ob'+q.ans).classList.add('correct');
+  const fb=document.getElementById('q-fb');
+  fb.className='fb-box to';
+  fb.style.display='block';
+  fb.innerHTML=`⏰ Waktu habis! Jawaban: <b>${q.opts[q.ans]}</b><br><small>${q.exp}</small>`;
+  const nx=document.getElementById('q-nxt');
+  nx.style.display='block';
+  if(livesLeft<=0){
+    nx.textContent='Game Over 💀';
+    nx.onclick=()=>triggerGameOver();
+  } else {
+    nx.textContent='Lanjut →';
+    nx.onclick=()=>nextQ();
+  }
+}
+
+function renderQ(){
+  stopTimer();
+  if(curQ>=shuffledQs.length){finishLevel();return;}
+  const q=shuffledQs[curQ];
+  const pct=Math.round((curQ/shuffledQs.length)*100);
+  document.getElementById('q-prog-lbl').textContent=`Soal ${curQ+1} dari ${shuffledQs.length}`;
+  document.getElementById('q-prog-fill').style.width=pct+'%';
+  document.getElementById('q-fb').style.display='none';
+  const nx=document.getElementById('q-nxt');
+  nx.style.display='none';
+  nx.onclick=()=>nextQ();
+  wrongThisQ=0;
+  document.getElementById('q-area').innerHTML=`
+    <div class="q-card">
+      <span class="q-badge">Soal ${curQ+1}</span>
+      <div class="q-text">${q.q}</div>
+    </div>
+    <div class="opts">
+      ${q.opts.map((o,i)=>`<button class="opt-btn" id="ob${i}" onclick="pickAns(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+    </div>`;
+  startTimer();
+}
+
+function pickAns(idx){
+  const q=shuffledQs[curQ];
+  const fb=document.getElementById('q-fb');
+  const nx=document.getElementById('q-nxt');
+  if(idx===q.ans){
+    stopTimer();
+    totalElapsed+=(Date.now()-qStart)/1000;
+    curScore++;
+    document.getElementById('q-score').textContent='⭐ '+curScore;
+    document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+    document.getElementById('ob'+idx).classList.add('correct');
+    fb.className='fb-box ok';
+    fb.style.display='block';
+    fb.textContent='✅ Benar! '+q.exp;
+    nx.style.display='block';
+    nx.textContent=curQ+1<shuffledQs.length?'Soal Berikutnya →':'Selesai! 🎉';
+    nx.onclick=()=>nextQ();
+    spawnConf();
+  } else {
+    wrongThisQ++;
+    livesLeft--;
+    renderLives();
+    document.getElementById('ob'+idx).classList.add('wrong');
+    document.getElementById('ob'+idx).disabled=true;
+    document.getElementById('ob'+idx).classList.add('used');
+    if(livesLeft<=0){
+      stopTimer();
+      document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+      document.getElementById('ob'+q.ans).classList.add('correct');
+      fb.className='fb-box no';
+      fb.style.display='block';
+      fb.innerHTML=`❌ Nyawa habis! Jawaban: <b>${q.opts[q.ans]}</b><br><small>${q.exp}</small>`;
+      nx.style.display='block';
+      nx.textContent='Game Over 💀';
+      nx.onclick=()=>triggerGameOver();
+    } else {
+      fb.className='fb-box no';
+      fb.style.display='block';
+      fb.innerHTML=`❌ Salah! Sisa nyawa: ${livesLeft}❤️ — Coba lagi!`;
+      // timer terus jalan, harus jawab benar dulu
+    }
+  }
+}
+
+function nextQ(){curQ++;renderQ();}
+
+function triggerGameOver(){
+  stopTimer();
+  totalElapsed=(Date.now()-sessionStart)/1000;
+  document.getElementById('go-benar').textContent=curScore;
+  document.getElementById('go-soal').textContent=curQ+1;
+  document.getElementById('go-waktu').textContent=totalElapsed.toFixed(1)+'s';
+  document.getElementById('go-level').textContent=curLevel;
+  document.getElementById('go-sub').textContent=['Nyawa habis! Coba lagi!','Semangat, kamu pasti bisa!','Latihan lagi ya!'][Math.floor(Math.random()*3)];
+  showScreen('s-go');
+}
+
+function finishLevel(){
+  stopTimer();
+  totalElapsed=(Date.now()-sessionStart)/1000;
+  const total=shuffledQs.length;
+  const pct=Math.round((curScore/total)*100);
+  // Hitung bintang berdasarkan skor
+  let stars=1;
+  if(pct===100)stars=3;
+  else if(pct>=80)stars=2;
+  // Simpan bintang (ambil yang terbaik)
+  const prevStars=getStars(curSubj,curDiff,curLevel);
+  if(stars>prevStars)setStars(curSubj,curDiff,curLevel,stars);
+
+  let emoji,title,sub;
+  if(pct===100){emoji='🏆';title='SEMPURNA!';sub='Level '+curLevel+' Selesai dengan nilai 100!';}
+  else if(pct>=80){emoji='🌟';title='Bagus Sekali!';sub='Level '+curLevel+' Selesai!';}
+  else{emoji='👍';title='Level Selesai!';sub='Level '+curLevel+' — Nilai: '+pct;}
+
+  document.getElementById('ld-emoji').textContent=emoji;
+  document.getElementById('ld-title').textContent=title;
+  document.getElementById('ld-sub').textContent=sub;
+  document.getElementById('ld-benar').textContent=curScore+'/'+total;
+  document.getElementById('ld-waktu').textContent=totalElapsed.toFixed(1)+'s';
+  document.getElementById('ld-level').textContent=curLevel;
+
+  // Stars animation
+  const starsEl=document.getElementById('ld-stars');
+  starsEl.innerHTML=Array.from({length:3},(_,i)=>`<span class="star-anim">${i<stars?'⭐':'☆'}</span>`).join('');
+
+  // Next level button
+  const nxBtn=document.getElementById('ld-next-btn');
+  if(curLevel>=MAX_LEVELS){
+    nxBtn.textContent='🏆 Semua Level Selesai!';
+    nxBtn.onclick=()=>goHome();
+  } else {
+    nxBtn.textContent='▶ Lanjut Level '+(curLevel+1);
+    nxBtn.onclick=()=>goNextLevel();
+  }
+
+  lastResult={subj:bank[curSubj].label,diff:DIFF[curDiff].label,level:curLevel,score:curScore,total,pct,time:parseFloat(totalElapsed.toFixed(1)),stars,ts:Date.now()};
+  spawnConf();
+  showScreen('s-lvdone');
+}
+
+function saveAndShowLB(){
+  pendingLBSave=lastResult;
+  const modal=document.getElementById('lb-name-modal');
+  modal.style.display='flex';
+  document.getElementById('lb-name-inp').value='';
+  document.getElementById('lb-name-inp').focus();
+}
+
+function closeLBModal(){
+  document.getElementById('lb-name-modal').style.display='none';
+}
+
+function doSaveLB(){
+  const name=document.getElementById('lb-name-inp').value.trim();
+  if(!name)return;
+  let lb=[];
+  try{lb=JSON.parse(localStorage.getItem('lb_sd_v4')||'[]')}catch(e){}
+  lb.unshift({name,...pendingLBSave});
+  if(lb.length>300)lb=lb.slice(0,300);
+  try{localStorage.setItem('lb_sd_v4',JSON.stringify(lb))}catch(e){}
+  closeLBModal();
+  spawnConf();
+  showLB();
+}
+
+// ─── LEADERBOARD ─────────────────────────────────────────
+function showLB(){
+  showScreen('s-lb');
+  const subjects=['Semua',...Object.values(bank).map(s=>s.label)];
+  document.getElementById('lb-tabs').innerHTML=subjects.map(s=>
+    `<button class="tab-pill ${s===lbFilter?'active':''}" onclick="setLBFilter('${s}',this)">${s==='Semua'?'🏆 Semua':s}</button>`
+  ).join('');
+  renderLBList();
+}
+
+function setLBFilter(f,btn){
+  lbFilter=f;
+  document.querySelectorAll('.tab-pill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLBList();
+}
+
+function setSort(mode,btn){
+  lbSort=mode;
+  document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLBList();
+}
+
+function renderLBList(){
+  let lb=[];
+  try{lb=JSON.parse(localStorage.getItem('lb_sd_v4')||'[]')}catch(e){}
+  if(lbFilter!=='Semua')lb=lb.filter(e=>e.subj===lbFilter);
+  if(lbSort==='speed')lb.sort((a,b)=>b.pct-a.pct||a.time-b.time);
+  else if(lbSort==='score')lb.sort((a,b)=>b.pct-a.pct||b.score-a.score);
+  else lb.sort((a,b)=>b.level-a.level||b.pct-a.pct||a.time-b.time);
+  const top=lb.slice(0,20);
+  const medals=['🥇','🥈','🥉'];
+  const cont=document.getElementById('lb-list');
+  if(!top.length){cont.innerHTML='<div class="lb-empty">📭 Belum ada skor.<br>Mainkan dulu yuk!</div>';return;}
+  cont.innerHTML=top.map((e,i)=>{
+    const dk=Object.keys(DIFF).find(k=>DIFF[k].label===e.diff)||'mudah';
+    const dc=DIFF[dk];
+    return`<div class="lb-item">
+      <div class="lb-rank">${medals[i]||'#'+(i+1)}</div>
+      <div class="lb-info">
+        <div class="lb-name">${e.name}</div>
+        <div class="lb-meta">${e.subj}<span class="dtag" style="background:${dc.tag_bg};color:${dc.tag_col}">${e.diff}</span> Lv.${e.level||1}</div>
+      </div>
+      <div class="lb-right">
+        <div class="lb-val">${'⭐'.repeat(e.stars||1)}</div>
+        <div class="lb-sub">${e.score}/${e.total} • ${e.time}s</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function clearLB(){
+  if(!confirm('Hapus semua papan skor?'))return;
+  try{localStorage.removeItem('lb_sd_v4')}catch(e){}
+  renderLBList();
+}
+
+// ─── CONFETTI ─────────────────────────────────────────────
+function spawnConf(){
+  const c=document.getElementById('conf');
+  const items=['⭐','🌟','✨','🎉','💫','🎊'];
+  for(let i=0;i<8;i++){
+    const el=document.createElement('div');
+    el.className='conf-p';
+    el.textContent=items[Math.floor(Math.random()*items.length)];
+    el.style.left=Math.random()*90+'%';
+    el.style.animationDelay=(Math.random()*0.4)+'s';
+    c.appendChild(el);
+  }
+  setTimeout(()=>c.innerHTML='',1600);
+}
+
+function confirmBack(){stopTimer();showLevelSelect();}
+
+renderSubjects();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
+</script>
+</body>
+</html>
